@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- 将多个配置文件读取到容器中，交给Spring管理 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/config/config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="telenavHttpClient" class="com.telenav.cloud.search.utils.http.TelenavHttpClient">
+        <property name="url" value="${url}"></property>
+        <!--<property name="url">-->
+            <!--<value>${url}</value>-->
+        <!--</property>-->
+    </bean>
+
+    <bean id="keywordSearch" class="com.telenav.cloud.search.service.KeywordSearch">
+        <property name="urlPrefix" value="${url.web.search.poi}" />
+        <property name="httpClient" ref="telenavHttpClient" />
+    </bean>
+
+    <bean id="inputSuggestion" class="com.telenav.cloud.search.service.InputSuggestion">
+        <property name="urlPrefix" value="${url.web.search.suggest}" />
+        <property name="httpClient" ref="telenavHttpClient" />
+    </bean>
+
+</beans>
