@@ -1,5 +1,5 @@
 
-package com.telenav.cloud.search.entity.suggestion;
+package com.telenav.cloud.search.entity.poi;
 
 public class Tip {
    	private String[] tip;

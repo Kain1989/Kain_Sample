@@ -16,18 +16,18 @@ public class CoderUtils {
     }
 
     public static String ascii2String(int[] ASCIIs) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < ASCIIs.length; i++) {
-            sb.append((char) ascii2Char(ASCIIs[i]));
+        StringBuilder sb = new StringBuilder();
+        for (int ASCII : ASCIIs) {
+            sb.append(ascii2Char(ASCII));
         }
         return sb.toString();
     }
 
     public static String ascii2String(String ASCIIs) {
         String[] ASCIIss = ASCIIs.split(",");
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < ASCIIss.length; i++) {
-            sb.append((char) ascii2Char(Integer.parseInt(ASCIIss[i])));
+        StringBuilder sb = new StringBuilder();
+        for (String ASCII : ASCIIss) {
+            sb.append(ascii2Char(Integer.parseInt(ASCII)));
         }
         return sb.toString();
     }
@@ -51,15 +51,15 @@ public class CoderUtils {
     }
 
     public static String getIntArrayString(int[] intArray, String delimiter) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < intArray.length; i++) {
-            sb.append(intArray[i]).append(delimiter);
+        StringBuilder sb = new StringBuilder();
+        for (int each : intArray) {
+            sb.append(each).append(delimiter);
         }
         return sb.toString();
     }
 
     public static String getASCII(int begin, int end) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = begin; i < end; i++) {
             sb.append(i).append(":").append((char) i).append("/t");
             // sb.append((char) i).append("/t");
@@ -93,8 +93,8 @@ public class CoderUtils {
     }
 
     public static void showIntArray(int[] intArray, String delimiter) {
-        for (int i = 0; i < intArray.length; i++) {
-            System.out.print(intArray[i] + delimiter);
+        for (int each : intArray) {
+            System.out.print(each + delimiter);
         }
     }
 

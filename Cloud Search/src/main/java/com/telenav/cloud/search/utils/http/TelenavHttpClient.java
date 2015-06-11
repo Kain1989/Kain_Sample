@@ -28,16 +28,6 @@ public class TelenavHttpClient {
 
     private static TelenavHttpClient instance;
 
-    private String url;
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void testRun() throws IOException {
-        this.doGet(url);
-    }
-
     public static TelenavHttpClient getInstance() {
         Object obj = new Object();
         synchronized (obj) {

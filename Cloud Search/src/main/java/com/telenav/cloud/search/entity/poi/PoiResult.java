@@ -1,7 +1,7 @@
 
-package com.telenav.cloud.search.entity.suggestion;
+package com.telenav.cloud.search.entity.poi;
 
-public class InputSuggestionResult{
+public class PoiResult {
    	private Ats ats;
 
  	public Ats getAts(){

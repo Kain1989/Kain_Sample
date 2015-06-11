@@ -14,20 +14,16 @@
     </bean>
 
     <bean id="telenavHttpClient" class="com.telenav.cloud.search.utils.http.TelenavHttpClient">
-        <property name="url" value="${url}"></property>
-        <!--<property name="url">-->
-            <!--<value>${url}</value>-->
-        <!--</property>-->
     </bean>
 
-    <bean id="keywordSearch" class="com.telenav.cloud.search.service.KeywordSearch">
-        <property name="urlPrefix" value="${url.web.search.poi}" />
-        <property name="httpClient" ref="telenavHttpClient" />
+    <bean id="poiSearch" class="com.telenav.cloud.search.service.PoiSearch">
+        <property name="urlPrefix" value="${url.web.search.poi}"/>
+        <property name="httpClient" ref="telenavHttpClient"/>
     </bean>
 
     <bean id="inputSuggestion" class="com.telenav.cloud.search.service.InputSuggestion">
-        <property name="urlPrefix" value="${url.web.search.suggest}" />
-        <property name="httpClient" ref="telenavHttpClient" />
+        <property name="urlPrefix" value="${url.web.search.suggest}"/>
+        <property name="httpClient" ref="telenavHttpClient"/>
     </bean>
 
 </beans>
