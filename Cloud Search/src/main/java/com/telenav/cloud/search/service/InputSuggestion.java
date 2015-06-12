@@ -1,15 +1,13 @@
 package com.telenav.cloud.search.service;
 
-import com.telenav.cloud.search.entity.poi.PoiResult;
+import com.telenav.cloud.search.entity.CloudResult;
 import com.telenav.cloud.search.test.WebConstKeys;
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class InputSuggestion extends SearchService<PoiResult> {
+public class InputSuggestion extends SearchService<CloudResult> {
 
     private static Logger logger = Logger.getLogger(InputSuggestion.class);
 
@@ -52,19 +50,4 @@ public class InputSuggestion extends SearchService<PoiResult> {
         return params;
     }
 
-    public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[]{"spring/appContext.xml"});
-
-
-        InputSuggestion suggestion = (InputSuggestion) context.getBean("inputSuggestion");
-        suggestion.Words = "东方明珠";
-        PoiResult result = suggestion.search();
-        System.out.println("Request = " + result.getAts().getTip_list());
-
-        suggestion.Words = "仙霞";
-        suggestion.City = "上海";
-        System.out.println("Request = " + suggestion.search().getAts().getTip_list());
-
-    }
 }

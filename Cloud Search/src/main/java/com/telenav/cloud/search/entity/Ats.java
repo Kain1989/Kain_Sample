@@ -1,6 +1,4 @@
-package com.telenav.cloud.search.entity.poi;
-
-import com.telenav.cloud.search.entity.keyword.Poi;
+package com.telenav.cloud.search.entity;
 
 import java.util.List;
 
@@ -18,9 +16,9 @@ public class Ats {
 
     private Suggestion suggestion;
 
-    private List<Poi> poi_list;
+    private PoiList poi_list;
 
-    private List<Tip> tip_list;
+    private TipList tip_list;
 
     private List<Road> road_list;
 
@@ -76,19 +74,19 @@ public class Ats {
         this.suggestion = suggestion;
     }
 
-    public List<Poi> getPoi_list() {
+    public PoiList getPoi_list() {
         return poi_list;
     }
 
-    public void setPoi_list(List<Poi> poi_list) {
+    public void setPoi_list(PoiList poi_list) {
         this.poi_list = poi_list;
     }
 
-    public List<Tip> getTip_list() {
+    public TipList getTip_list() {
         return tip_list;
     }
 
-    public void setTip_list(List<Tip> tip_list) {
+    public void setTip_list(TipList tip_list) {
         this.tip_list = tip_list;
     }
 

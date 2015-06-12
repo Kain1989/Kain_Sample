@@ -1,16 +1,13 @@
 package com.telenav.cloud.search.service;
 
-import com.telenav.cloud.search.entity.keyword.KeywordResult;
-import com.telenav.cloud.search.entity.keyword.Poi;
+import com.telenav.cloud.search.entity.CloudResult;
 import com.telenav.cloud.search.test.WebConstKeys;
-import com.telenav.cloud.search.utils.config.TelenavConfiguration;
-import com.telenav.cloud.search.utils.http.TelenavHttpClient;
 import org.apache.log4j.Logger;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class PoiSearch extends SearchService<KeywordResult> {
+public class PoiSearch extends SearchService<CloudResult> {
 
     private static Logger logger = Logger.getLogger(PoiSearch.class);
 
@@ -27,7 +24,7 @@ public class PoiSearch extends SearchService<KeywordResult> {
     @Override
     protected Map<String, Object> generateQueryParameters() {
 
-        Map<String, Object> params = new LinkedHashMap<>();
+        Map<String, Object> params = new LinkedHashMap<String, Object>();
         if (Keywords.isEmpty() && Category.isEmpty())
             return null;
 
@@ -54,37 +51,6 @@ public class PoiSearch extends SearchService<KeywordResult> {
         }
         params.put("sign", getSignatureString());
         return params;
-    }
-
-    public static void main(String[] args) {
-//        ApplicationContext context = new ClassPathXmlApplicationContext(
-//                new String[]{"spring/appContext.xml"});
-//        PoiSearch poiSearch = (PoiSearch) context.getBean("poiSearch");
-
-        PoiSearch poiSearch = new PoiSearch();
-        poiSearch.setHttpClient(TelenavHttpClient.getInstance());
-        poiSearch.setUrlPrefix(TelenavConfiguration.getInstance().getPoiUrlPrefix());
-
-//        KeywordResult result = poiSearch.search("东方明珠");
-//        System.out.println(result.toString());
-//
-//        for (Poi poi : result.getAts().getPoi_list().getPoi()) {
-//            System.out.println(poi.toString());
-//        }
-
-        poiSearch.Keywords = "上海仙霞";
-        KeywordResult result = poiSearch.search();
-        System.out.println(result.toString());
-
-        for (Poi poi : result.getAts().getPoi_list()) {
-            System.out.println(poi.toString());
-        }
-//        poiSearch.City = "上海";
-//        poiSearch.search("仙霞");
-//
-//        poiSearch.City = "上海";
-//        poiSearch.search("dfmz");
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.telenav.cloud.search.entity.poi;
+package com.telenav.cloud.search.entity;
 
 /**
  * Created by zfshi on 6/11/2015.
