@@ -1,6 +1,4 @@
-package com.telenav.cloud.search.entity.poi;
-
-import com.telenav.cloud.search.entity.keyword.Poi;
+package com.telenav.cloud.search.entity;
 
 import java.util.List;
 
