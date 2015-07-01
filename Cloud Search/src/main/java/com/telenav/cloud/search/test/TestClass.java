@@ -1,8 +1,5 @@
 package com.telenav.cloud.search.test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -12,21 +9,30 @@ public class TestClass {
 
     private Map<String, HttpRequest> myList;
 
-    public static void main(String[] args) throws NoSuchFieldException {
-        Field field = TestClass.class.getDeclaredField("myList"); //myList的类型是List
-        Type type = field.getGenericType();
-        if (type instanceof ParameterizedType) {
-            ParameterizedType paramType = (ParameterizedType) type;
-            Type[] actualTypes = paramType.getActualTypeArguments();
-            for (Type aType : actualTypes) {
-                if (aType instanceof Class) {
-                    Class clz = (Class) aType;
-                    System.out.println(clz.getName()); //输出java.lang.String
-                }
-            }
-        }
+//    public static void main(String[] args) throws NoSuchFieldException {
+//        System.out.println("中文");
+//        Field field = TestClass.class.getDeclaredField("myList"); //myList的类型是List
+//        Type type = field.getGenericType();
+//        if (type instanceof ParameterizedType) {
+//            ParameterizedType paramType = (ParameterizedType) type;
+//            Type[] actualTypes = paramType.getActualTypeArguments();
+//            for (Type aType : actualTypes) {
+//                if (aType instanceof Class) {
+//                    Class clz = (Class) aType;
+//                    System.out.println(clz.getName()); //输出java.lang.String
+//                }
+//            }
+//        }
+//
+//    }
 
+    public static void main(String[] args) {
+        TestA a = new TestA();
+        a.setName("Kain");
+//        TestB b = new TestB(a);
     }
+
+
 //
 //    public static void main(String[] args) {
 ////        String str = null;

@@ -34,6 +34,7 @@ public class TelenavHttpRetryHandler implements HttpRequestRetryHandler {
         }
         if (exception instanceof InterruptedIOException) {
             // Timeout
+            logger.info("Meet timeout, will retry " + executionCount);
             return true;
         }
         if (exception instanceof UnknownHostException) {
