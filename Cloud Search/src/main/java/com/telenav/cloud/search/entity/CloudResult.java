@@ -1,7 +1,7 @@
 
-package com.telenav.cloud.search.entity.poi;
+package com.telenav.cloud.search.entity;
 
-public class PoiResult {
+public class CloudResult {
    	private Ats ats;
 
  	public Ats getAts(){

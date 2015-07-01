@@ -1,4 +1,4 @@
-package com.telenav.cloud.search.service;
+package com.telenav.search.index.test;
 
 /**
  * Created by zfshi on 6/12/2015.
@@ -6,8 +6,6 @@ package com.telenav.cloud.search.service;
 public class TestService {
 
     public static void main(String[] args) {
-        System.out.println("中文字符 ");
-        System.out.println("\u9a6c\u978d\u5c71\u5e02");
         System.out.println("中文");
     }
 }

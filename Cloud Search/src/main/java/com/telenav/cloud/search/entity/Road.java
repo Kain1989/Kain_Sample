@@ -1,19 +1,19 @@
-package com.telenav.cloud.search.entity.poi;
+package com.telenav.cloud.search.entity;
 
 /**
  * Created by zfshi on 6/11/2015.
  */
-public class RoadInter {
+public class Road {
 
     private String id;
 
     private String citycode;
 
+    private String level;
+
     private String name;
 
-    private String longitude;
-
-    private String latitude;
+    private String width;
 
     public String getId() {
         return id;
@@ -31,6 +31,14 @@ public class RoadInter {
         this.citycode = citycode;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     public String getName() {
         return name;
     }
@@ -39,19 +47,12 @@ public class RoadInter {
         this.name = name;
     }
 
-    public String getLongitude() {
-        return longitude;
+    public String getWidth() {
+        return width;
     }
 
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setWidth(String width) {
+        this.width = width;
     }
 
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
 }
