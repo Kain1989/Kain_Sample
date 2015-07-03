@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.telenav</groupId>
-    <artifactId>cloud_search</artifactId>
+    <artifactId>Cloud_Search_Autonavi</artifactId>
     <version>1.0.0</version>
 
     <properties>
