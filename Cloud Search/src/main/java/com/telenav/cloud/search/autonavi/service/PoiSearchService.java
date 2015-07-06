@@ -2,9 +2,11 @@ package com.telenav.cloud.search.autonavi.service;
 
 import com.telenav.cloud.search.autonavi.entity.poi_generate.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.exception.AuthenticationBuildException;
+import com.telenav.cloud.search.autonavi.exception.URLBuildException;
 import com.telenav.cloud.search.autonavi.model.type.DataType;
 import com.telenav.cloud.search.autonavi.model.type.QueryType;
 import com.telenav.cloud.search.autonavi.request.AutonaviSearchRequest;
+import com.telenav.cloud.search.autonavi.request.Rectangle;
 import com.telenav.cloud.search.autonavi.request.RequestKeyConstants;
 import com.telenav.cloud.search.autonavi.request.RequestValueConstants;
 import com.telenav.cloud.search.autonavi.test.WebConstKeys;
@@ -75,13 +77,16 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
     protected Map<String, Object> generateQueryParameters(AutonaviSearchRequest request) throws AuthenticationBuildException {
 
         Map<String, Object> params = super.generateCommonParameters(request);
-        if (StringUtils.isBlank(request.getKeywords()) && StringUtils.isBlank(request.getCategory())) {
+        if (request.getQueryType().equals(QueryType.KEYWORDS) && StringUtils.isBlank(request.getKeywords()) && StringUtils.isBlank(request.getCategory())) {
             logger.warn("Keywords and Category were both empty, could not execute search");
             return null;
         }
 
         params.put(RequestKeyConstants.QUERY_TYPE, request.getQueryType().getCode());
 
+        if (StringUtils.isNotBlank(request.getId())) {
+            params.put(RequestKeyConstants.ID, request.getId());
+        }
         if (StringUtils.isNotBlank(request.getCity())) {
             params.put(RequestKeyConstants.CITY, request.getCity());
         }
@@ -91,6 +96,18 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
         if (StringUtils.isNotBlank(request.getCategory())) {
             params.put(RequestKeyConstants.CATEGORY, request.getCategory());
         }
+        if (request.getLongitude() != null) {
+            params.put(RequestKeyConstants.LONGITUDE, request.getLongitude());
+        }
+        if (request.getLatitude() != null) {
+            params.put(RequestKeyConstants.LATITUDE, request.getLatitude());
+        }
+        if (request.getRectangle() != null) {
+            params.put(RequestKeyConstants.RECTANGLE, this.generateRectangleString(request.getRectangle()));
+        }
+        if (StringUtils.isNotBlank(request.getCenter())) {
+            params.put(RequestKeyConstants.CENTER, request.getCenter());
+        }
         if (request.getMergeAddressPoi() != null) {
             params.put(RequestKeyConstants.MERGE_ADDR_POI, request.getMergeAddressPoi());
         }
@@ -98,7 +115,7 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
         return params;
     }
 
-    public static void main(String[] args) throws AuthenticationBuildException {
+    public static void main(String[] args) throws AuthenticationBuildException, URLBuildException {
 //        ApplicationContext context = new ClassPathXmlApplicationContext(
 //                new String[]{"spring/appContext.xml"});
 //        PoiSearchService poiSearch = (PoiSearchService) context.getBean("poiSearch");
@@ -119,7 +136,9 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
     @Override
     protected String getAuthenticationString(AutonaviSearchRequest request) throws AuthenticationBuildException {
         StringBuilder authentication = new StringBuilder();
-        // TODO id
+        if (StringUtils.isNotBlank(request.getId())) {
+            authentication.append(request.getId());
+        }
         if (request.getLongitude() != null) {
             authentication.append(request.getLongitude());
         }
@@ -130,13 +149,31 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
             authentication.append(request.getKeywords());
         }
         if (request.getCategory() != null) {
-            authentication.append(Category);
+            authentication.append(request.getCategory());
+        }
+        if (StringUtils.isNotBlank(request.getCenter())) {
+            authentication.append(request.getCenter());
+        }
+        if (request.getRectangle() != null) {
+            authentication.append(this.generateRectangleString(request.getRectangle()));
         }
 
         authentication.append(RequestValueConstants.AUTHENCATION_SEPERATOR);
         authentication.append(WebConstKeys.Customer_Key_Telenav);
         logger.info("Authentication string is : " + authentication);
         return authentication.toString();
+    }
+
+    private String generateRectangleString(Rectangle rectangle) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(rectangle.getTopLeft().getLongitude());
+        builder.append(";");
+        builder.append(rectangle.getTopLeft().getLatitude());
+        builder.append(";");
+        builder.append(rectangle.getBottomRight().getLongitude());
+        builder.append(";");
+        builder.append(rectangle.getBottomRight().getLatitude());
+        return builder.toString();
     }
 
 }

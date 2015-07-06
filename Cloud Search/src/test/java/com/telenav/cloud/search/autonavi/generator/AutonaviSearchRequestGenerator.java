@@ -26,8 +26,6 @@ public class AutonaviSearchRequestGenerator {
 
     public static AutonaviSearchRequest generatePoiKeywordsRequest() {
         AutonaviSearchRequest request = generateBaseRequest();
-        request.setQueryType(QueryType.KEYWORDS);
-
 
         return request;
     }

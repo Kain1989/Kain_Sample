@@ -22,6 +22,8 @@ public class AutonaviSearchRequest {
 
     private Double latitude;
 
+    private Rectangle rectangle;
+
     private Boolean compress;
 
     private Boolean anonymous;
@@ -96,6 +98,14 @@ public class AutonaviSearchRequest {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
     }
 
     public Boolean getCompress() {

@@ -13,6 +13,8 @@ public class RequestKeyConstants {
 
     public static final String LANGUAGE = "language";
 
+    public static final String ID = "id";
+
     public static final String CITY = "city";
 
     public static final String QUERY_TYPE = "query_type";
@@ -31,6 +33,10 @@ public class RequestKeyConstants {
 
     public static final String LONGITUDE = "longitude";
 
+    public static final String RECTANGLE = "geoobj";
+
+    public static final String CENTER = "center";
+
     public static final String WORDS = "words";
 
     public static final String KEYWORDS = "keywords";
@@ -39,3 +45,4 @@ public class RequestKeyConstants {
 
     public static final String ADCODE = "adcode";
 }
+

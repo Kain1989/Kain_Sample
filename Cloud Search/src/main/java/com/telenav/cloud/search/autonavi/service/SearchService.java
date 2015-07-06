@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.telenav.cloud.search.autonavi.exception.AuthenticationBuildException;
+import com.telenav.cloud.search.autonavi.exception.URLBuildException;
 import com.telenav.cloud.search.autonavi.request.AutonaviSearchRequest;
 import com.telenav.cloud.search.autonavi.request.RequestKeyConstants;
 import com.telenav.cloud.search.autonavi.request.RequestValueConstants;
@@ -69,13 +70,12 @@ public abstract class SearchService<T> {
 
     protected abstract String getAuthenticationString(AutonaviSearchRequest request) throws AuthenticationBuildException;
 
-    public T search(AutonaviSearchRequest request) throws AuthenticationBuildException {
+    public T search(AutonaviSearchRequest request) throws AuthenticationBuildException, URLBuildException {
         T result = null;
         TelenavHttpResponse response = null;
         Map<String, Object> params = this.generateQueryParameters(request);
         if (params == null) {
-            logger.error("Parameters are null, could not execute request");
-            return null;
+            throw new URLBuildException("Parameters are null, could not execute request");
         }
         URI uri = TelenavUriBuilder.build(this.urlPrefix, params);
         if (uri == null) {
