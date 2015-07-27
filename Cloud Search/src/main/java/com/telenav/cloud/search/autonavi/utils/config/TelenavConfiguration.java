@@ -20,12 +20,15 @@ public class TelenavConfiguration {
 
     private static final String REVERSE_CODE_URL_PREFIX = "url.web.search.reverse";
 
+    private static final String GEO_CODE_URL_PREFIX = "url.web.search.geocode";
+
+    private static Object obj = new Object();
+
     private static TelenavConfiguration instance;
 
     private Properties props = new Properties();
 
     public static TelenavConfiguration getInstance() {
-        Object obj = new Object();
         synchronized (obj) {
             if (instance == null) {
                 instance = new TelenavConfiguration();
@@ -39,7 +42,6 @@ public class TelenavConfiguration {
         try {
             props.load(getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE));
         } catch (IOException e) {
-
             logger.error(e.getMessage(), e);
         }
     }
@@ -54,5 +56,9 @@ public class TelenavConfiguration {
 
     public String getSuggestUrlPrefix() {
         return props.getProperty(SUGGEST_URL_PREFIX);
+    }
+
+    public String getGeoCodeUrlPrefix() {
+        return props.getProperty(GEO_CODE_URL_PREFIX);
     }
 }

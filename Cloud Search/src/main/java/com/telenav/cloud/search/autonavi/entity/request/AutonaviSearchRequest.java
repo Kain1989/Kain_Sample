@@ -1,4 +1,4 @@
-package com.telenav.cloud.search.autonavi.request;
+package com.telenav.cloud.search.autonavi.entity.request;
 
 
 import com.telenav.cloud.search.autonavi.model.type.DataType;
@@ -18,9 +18,7 @@ public class AutonaviSearchRequest {
 
     private Long pageNumber;
 
-    private Double longitude;
-
-    private Double latitude;
+    private Point location;
 
     private Rectangle rectangle;
 
@@ -31,6 +29,10 @@ public class AutonaviSearchRequest {
     private Boolean adcode;
 
     private Boolean mergeAddressPoi;
+
+    private Boolean oneRow;
+
+    private String address;
 
     private String output;
 
@@ -52,11 +54,11 @@ public class AutonaviSearchRequest {
 
     private String center;
 
-    private String category;
-
     private SortRule sortRule;
 
     private QueryType queryType;
+
+    private List<String> categoryList;
 
     private List<DataType> dataTypes;
 
@@ -84,20 +86,12 @@ public class AutonaviSearchRequest {
         this.pageNumber = pageNumber;
     }
 
-    public Double getLongitude() {
-        return longitude;
+    public Point getLocation() {
+        return location;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setLocation(Point location) {
+        this.location = location;
     }
 
     public Rectangle getRectangle() {
@@ -138,6 +132,22 @@ public class AutonaviSearchRequest {
 
     public void setMergeAddressPoi(Boolean mergeAddressPoi) {
         this.mergeAddressPoi = mergeAddressPoi;
+    }
+
+    public Boolean getOneRow() {
+        return oneRow;
+    }
+
+    public void setOneRow(Boolean oneRow) {
+        this.oneRow = oneRow;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getOutput() {
@@ -220,14 +230,6 @@ public class AutonaviSearchRequest {
         this.center = center;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public SortRule getSortRule() {
         return sortRule;
     }
@@ -242,6 +244,14 @@ public class AutonaviSearchRequest {
 
     public void setQueryType(QueryType queryType) {
         this.queryType = queryType;
+    }
+
+    public List<String> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<String> categoryList) {
+        this.categoryList = categoryList;
     }
 
     public List<DataType> getDataTypes() {

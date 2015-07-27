@@ -1,14 +1,14 @@
 package com.telenav.cloud.search.autonavi.service;
 
 import com.telenav.cloud.search.autonavi.entity.poi_generate.AutonaviResponse;
+import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
+import com.telenav.cloud.search.autonavi.entity.request.Rectangle;
+import com.telenav.cloud.search.autonavi.entity.request.RequestKeyConstants;
+import com.telenav.cloud.search.autonavi.entity.request.RequestValueConstants;
 import com.telenav.cloud.search.autonavi.exception.AuthenticationBuildException;
 import com.telenav.cloud.search.autonavi.exception.URLBuildException;
 import com.telenav.cloud.search.autonavi.model.type.DataType;
 import com.telenav.cloud.search.autonavi.model.type.QueryType;
-import com.telenav.cloud.search.autonavi.request.AutonaviSearchRequest;
-import com.telenav.cloud.search.autonavi.request.Rectangle;
-import com.telenav.cloud.search.autonavi.request.RequestKeyConstants;
-import com.telenav.cloud.search.autonavi.request.RequestValueConstants;
 import com.telenav.cloud.search.autonavi.test.WebConstKeys;
 import com.telenav.cloud.search.autonavi.utils.config.TelenavConfiguration;
 import com.telenav.cloud.search.autonavi.utils.http.TelenavHttpClient;
@@ -22,13 +22,25 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
 
     private static Logger logger = Logger.getLogger(PoiSearchService.class);
 
-    private String language;
+    private static Object obj = new Object();
 
-    public PoiSearchService(){};
+    private static PoiSearchService instance;
 
-    public PoiSearchService(String language) {
-        this.language = language;
+    public static PoiSearchService getInstance() {
+        synchronized (obj) {
+            if (instance == null) {
+                instance = new PoiSearchService();
+            }
+        }
+        return instance;
     }
+
+    private PoiSearchService() {
+        super();
+        this.urlPrefix = TelenavConfiguration.getInstance().getPoiUrlPrefix();
+    }
+
+    ;
 
     public void searchById(List<DataType> dateTypes, String poiId, String city, AutonaviSearchRequest request) {
 //        AutonaviSearchRequest param = this.getSearchParam(request);
@@ -59,31 +71,16 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
 
     }
 
-    public String Query_type = "TQUERY";
-    public String Data_type = "POI+ROAD+ROADINTER";
-    //public String Data_type = new String("POI");
-    public String City = "";
-    public String Keywords = "";
-    public String Category = "";
-    public long Page_size = 20;
-    public long Page_number = 1;
-    public boolean addr_poi_merge = false;
-
-    public double latitude = 0;
-
-    public double longitude = 0;
-
     @Override
     protected Map<String, Object> generateQueryParameters(AutonaviSearchRequest request) throws AuthenticationBuildException {
 
         Map<String, Object> params = super.generateCommonParameters(request);
-        if (request.getQueryType().equals(QueryType.KEYWORDS) && StringUtils.isBlank(request.getKeywords()) && StringUtils.isBlank(request.getCategory())) {
+        if (request.getQueryType().equals(QueryType.KEYWORDS) && StringUtils.isBlank(request.getKeywords())
+                && (request.getCategoryList() == null || request.getCategoryList().size() <= 0)) {
             logger.warn("Keywords and Category were both empty, could not execute search");
             return null;
         }
-
         params.put(RequestKeyConstants.QUERY_TYPE, request.getQueryType().getCode());
-
         if (StringUtils.isNotBlank(request.getId())) {
             params.put(RequestKeyConstants.ID, request.getId());
         }
@@ -93,14 +90,12 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
         if (StringUtils.isNotBlank(request.getKeywords())) {
             params.put(RequestKeyConstants.KEYWORDS, request.getKeywords());
         }
-        if (StringUtils.isNotBlank(request.getCategory())) {
-            params.put(RequestKeyConstants.CATEGORY, request.getCategory());
+        if (request.getCategoryList() != null && request.getCategoryList().size() > 0) {
+            params.put(RequestKeyConstants.CATEGORY, StringUtils.join(request.getCategoryList(), "|"));
         }
-        if (request.getLongitude() != null) {
-            params.put(RequestKeyConstants.LONGITUDE, request.getLongitude());
-        }
-        if (request.getLatitude() != null) {
-            params.put(RequestKeyConstants.LATITUDE, request.getLatitude());
+        if (request.getLocation() != null) {
+            params.put(RequestKeyConstants.LONGITUDE, request.getLocation().getLongitude());
+            params.put(RequestKeyConstants.LATITUDE, request.getLocation().getLatitude());
         }
         if (request.getRectangle() != null) {
             params.put(RequestKeyConstants.RECTANGLE, this.generateRectangleString(request.getRectangle()));
@@ -111,26 +106,7 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
         if (request.getMergeAddressPoi() != null) {
             params.put(RequestKeyConstants.MERGE_ADDR_POI, request.getMergeAddressPoi());
         }
-        params.put(RequestKeyConstants.SIGN, this.getSignatureString(request));
         return params;
-    }
-
-    public static void main(String[] args) throws AuthenticationBuildException, URLBuildException {
-//        ApplicationContext context = new ClassPathXmlApplicationContext(
-//                new String[]{"spring/appContext.xml"});
-//        PoiSearchService poiSearch = (PoiSearchService) context.getBean("poiSearch");
-
-        AutonaviSearchRequest request = new AutonaviSearchRequest();
-
-        PoiSearchService poiSearch = new PoiSearchService("zh_CN");
-        poiSearch.setHttpClient(TelenavHttpClient.getInstance());
-        poiSearch.setUrlPrefix(TelenavConfiguration.getInstance().getPoiUrlPrefix());
-
-        poiSearch.Keywords = "滴水湖";
-//        poiSearch.City = "苏州";
-        AutonaviResponse result = poiSearch.search(request);
-        System.out.println(result.getAts().getPoiList().getPois());
-
     }
 
     @Override
@@ -139,17 +115,15 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
         if (StringUtils.isNotBlank(request.getId())) {
             authentication.append(request.getId());
         }
-        if (request.getLongitude() != null) {
-            authentication.append(request.getLongitude());
-        }
-        if (request.getLatitude() != null) {
-            authentication.append(request.getLatitude());
+        if (request.getLocation() != null) {
+            authentication.append(request.getLocation().getLongitude());
+            authentication.append(request.getLocation().getLatitude());
         }
         if (request.getKeywords() != null) {
             authentication.append(request.getKeywords());
         }
-        if (request.getCategory() != null) {
-            authentication.append(request.getCategory());
+        if (request.getCategoryList() != null && request.getCategoryList().size() > 0) {
+            authentication.append(StringUtils.join(request.getCategoryList(), "|"));
         }
         if (StringUtils.isNotBlank(request.getCenter())) {
             authentication.append(request.getCenter());
@@ -176,4 +150,21 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
         return builder.toString();
     }
 
+    public static void main(String[] args) throws AuthenticationBuildException, URLBuildException {
+//        ApplicationContext context = new ClassPathXmlApplicationContext(
+//                new String[]{"spring/appContext.xml"});
+//        PoiSearchService poiSearch = (PoiSearchService) context.getBean("poiSearch");
+
+        AutonaviSearchRequest request = new AutonaviSearchRequest();
+
+        PoiSearchService poiSearch = new PoiSearchService();
+        poiSearch.setHttpClient(TelenavHttpClient.getInstance());
+        poiSearch.setUrlPrefix(TelenavConfiguration.getInstance().getPoiUrlPrefix());
+
+//        poiSearch.Keywords = "滴水湖";
+//        poiSearch.City = "苏州";
+        AutonaviResponse result = poiSearch.search(request);
+        System.out.println(result.getAts().getPoiList().getPois());
+
+    }
 }

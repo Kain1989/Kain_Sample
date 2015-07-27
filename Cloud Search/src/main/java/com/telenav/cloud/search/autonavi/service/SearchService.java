@@ -5,9 +5,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.telenav.cloud.search.autonavi.exception.AuthenticationBuildException;
 import com.telenav.cloud.search.autonavi.exception.URLBuildException;
-import com.telenav.cloud.search.autonavi.request.AutonaviSearchRequest;
-import com.telenav.cloud.search.autonavi.request.RequestKeyConstants;
-import com.telenav.cloud.search.autonavi.request.RequestValueConstants;
+import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
+import com.telenav.cloud.search.autonavi.entity.request.RequestKeyConstants;
+import com.telenav.cloud.search.autonavi.entity.request.RequestValueConstants;
 import com.telenav.cloud.search.autonavi.utils.coder.MD5Encoder;
 import com.telenav.cloud.search.autonavi.utils.http.TelenavHttpClient;
 import com.telenav.cloud.search.autonavi.utils.http.TelenavHttpResponse;
@@ -38,6 +38,7 @@ public abstract class SearchService<T> {
 
     protected SearchService() {
         this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.httpClient = TelenavHttpClient.getInstance();
     }
 
     protected abstract Map<String, Object> generateQueryParameters(AutonaviSearchRequest request) throws AuthenticationBuildException;
@@ -47,15 +48,9 @@ public abstract class SearchService<T> {
         params.put(RequestKeyConstants.FROM, request.getFrom());
         params.put(RequestKeyConstants.OUTPUT, RequestValueConstants.JSON);
         params.put(RequestKeyConstants.CHANNEL, RequestValueConstants.TELENAV);
-        StringBuilder dataTypes = new StringBuilder();
-        for (int i = 0; i < request.getDataTypes().size(); i++) {
-            dataTypes.append(request.getDataTypes().get(i).getCode());
-            if (i != request.getDataTypes().size() - 1) {
-                dataTypes.append("+");
-            }
+        if (request.getDataTypes() != null && request.getDataTypes().size() > 0) {
+            params.put(RequestKeyConstants.DATA_TYPE, StringUtils.join(request.getDataTypes().toArray(), "+"));
         }
-        if (StringUtils.isNotBlank(dataTypes.toString()))
-        params.put(RequestKeyConstants.DATA_TYPE, dataTypes.toString());
         if (request.getPageSize() != null) {
             params.put(RequestKeyConstants.PAGE_SIZE, request.getPageSize());
         }
@@ -65,6 +60,7 @@ public abstract class SearchService<T> {
         if (StringUtils.isNotBlank(request.getLanguage())) {
             params.put(RequestKeyConstants.LANGUAGE, request.getLanguage());
         }
+        params.put(RequestKeyConstants.SIGN, this.getSignatureString(request));
         return params;
     }
 

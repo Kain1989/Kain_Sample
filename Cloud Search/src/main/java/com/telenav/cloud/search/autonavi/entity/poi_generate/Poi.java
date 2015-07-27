@@ -27,6 +27,9 @@ public class Poi {
     private String citycode;
     @Expose
     private String introduction;
+    @SerializedName("introduction_chinese")
+    @Expose
+    private String introductionChinese;
     @Expose
     private String districtname;
     @Expose
@@ -78,6 +81,48 @@ public class Poi {
     @SerializedName("__text")
     @Expose
     private String Text;
+    @Expose
+    private String checked;
+    @Expose
+    private String postcode;
+
+    @Override
+    public String toString() {
+        return "Poi{" +
+                "rating='" + rating + '\'' +
+                ", tel='" + tel + '\'' +
+                ", weight='" + weight + '\'' +
+                ", areacode='" + areacode + '\'' +
+                ", keywords='" + keywords + '\'' +
+                ", id='" + id + '\'' +
+                ", ranksearch='" + ranksearch + '\'' +
+                ", citycode='" + citycode + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", districtname='" + districtname + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", type='" + type + '\'' +
+                ", longitudeEntrance='" + longitudeEntrance + '\'' +
+                ", opentime='" + opentime + '\'' +
+                ", provincename='" + provincename + '\'' +
+                ", typecode='" + typecode + '\'' +
+                ", latitudeEntrance='" + latitudeEntrance + '\'' +
+                ", cityname='" + cityname + '\'' +
+                ", longitudeExit='" + longitudeExit + '\'' +
+                ", latitudeExit='" + latitudeExit + '\'' +
+                ", provincecode='" + provincecode + '\'' +
+                ", address='" + address + '\'' +
+                ", localid='" + localid + '\'' +
+                ", districtcode='" + districtcode + '\'' +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", adcode='" + adcode + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", deepinfo='" + deepinfo + '\'' +
+                ", average='" + average + '\'' +
+                ", distance='" + distance + '\'' +
+                ", Text='" + Text + '\'' +
+                '}';
+    }
 
     /**
      * 
@@ -239,6 +284,14 @@ public class Poi {
      */
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public String getIntroductionChinese() {
+        return introductionChinese;
+    }
+
+    public void setIntroductionChinese(String introductionChinese) {
+        this.introductionChinese = introductionChinese;
     }
 
     /**
@@ -655,4 +708,19 @@ public class Poi {
         this.Text = Text;
     }
 
+    public String getChecked() {
+        return checked;
+    }
+
+    public void setChecked(String checked) {
+        this.checked = checked;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
 }

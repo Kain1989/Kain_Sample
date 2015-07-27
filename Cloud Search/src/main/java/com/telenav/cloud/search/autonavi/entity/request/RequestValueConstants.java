@@ -1,4 +1,4 @@
-package com.telenav.cloud.search.autonavi.request;
+package com.telenav.cloud.search.autonavi.entity.request;
 
 /**
  * Created by zfshi on 6/12/2015.

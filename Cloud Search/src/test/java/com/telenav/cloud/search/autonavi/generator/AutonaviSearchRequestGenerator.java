@@ -2,7 +2,9 @@ package com.telenav.cloud.search.autonavi.generator;
 
 import com.telenav.cloud.search.autonavi.model.type.DataType;
 import com.telenav.cloud.search.autonavi.model.type.QueryType;
-import com.telenav.cloud.search.autonavi.request.AutonaviSearchRequest;
+import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
+import com.telenav.cloud.search.autonavi.entity.request.Point;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,11 @@ import java.util.List;
  * Created by zfshi on 7/2/2015.
  */
 public class AutonaviSearchRequestGenerator {
+
+    public static void main(String[] args) {
+        AutonaviSearchRequest request = generateBaseRequest();
+        System.out.println(StringUtils.join(request.getDataTypes().toArray(), "+"));
+    }
 
     private static AutonaviSearchRequest generateBaseRequest() {
         AutonaviSearchRequest request = new AutonaviSearchRequest();
@@ -35,9 +42,17 @@ public class AutonaviSearchRequestGenerator {
         request.setQueryType(QueryType.LATLON);
         request.setKeywords("东方明珠");
 
-        request.setLatitude(31.239305);
-        request.setLongitude(121.521646);
+        request.setLocation(new Point(121.521646, 31.239305));
 
+
+        return request;
+    }
+
+    public static AutonaviSearchRequest generateGeoCodeRequest() {
+        AutonaviSearchRequest request = generateBaseRequest();
+        request.setDataTypes(new ArrayList<DataType>());
+
+        request.setLocation(new Point(121.521646, 31.239305));
 
         return request;
     }
@@ -46,8 +61,13 @@ public class AutonaviSearchRequestGenerator {
         AutonaviSearchRequest request = generateBaseRequest();
         request.setDataTypes(new ArrayList<DataType>());
 
-        request.setLatitude(31.239305);
-        request.setLongitude(121.521646);
+        request.setLocation(new Point(121.521646, 31.239305));
+
+        return request;
+    }
+
+    public static AutonaviSearchRequest generateInputSuggestionRequest() {
+        AutonaviSearchRequest request = generateBaseRequest();
 
         return request;
     }

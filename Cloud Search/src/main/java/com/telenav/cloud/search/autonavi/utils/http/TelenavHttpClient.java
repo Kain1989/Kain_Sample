@@ -28,8 +28,9 @@ public class TelenavHttpClient {
 
     private static TelenavHttpClient instance;
 
+    private static Object obj = new Object();
+
     public static TelenavHttpClient getInstance() {
-        Object obj = new Object();
         synchronized (obj) {
             if (instance == null) {
                 instance = new TelenavHttpClient();

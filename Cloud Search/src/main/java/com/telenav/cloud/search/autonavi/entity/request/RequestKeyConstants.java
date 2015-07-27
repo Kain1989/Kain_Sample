@@ -1,4 +1,4 @@
-package com.telenav.cloud.search.autonavi.request;
+package com.telenav.cloud.search.autonavi.entity.request;
 
 /**
  * Created by zfshi on 6/12/2015.
@@ -28,6 +28,10 @@ public class RequestKeyConstants {
     public static final String PAGE_SIZE = "pagesize";
 
     public static final String PAGE_NUM = "pagenum";
+
+    public static final String ADDRESS = "address";
+
+    public static final String ONE_ROW = "onwrow";
 
     public static final String LATITUDE = "latitude";
 
