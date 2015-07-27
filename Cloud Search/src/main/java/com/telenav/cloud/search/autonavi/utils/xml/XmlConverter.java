@@ -1,9 +1,9 @@
 package com.telenav.cloud.search.autonavi.utils.xml;
 
-import com.telenav.cloud.search.autonavi.entity.poi_generate.Ats;
-import com.telenav.cloud.search.autonavi.entity.poi_generate.AutonaviResponse;
-import com.telenav.cloud.search.autonavi.entity.poi_generate.Poi;
-import com.telenav.cloud.search.autonavi.entity.poi_generate.PoiList;
+import com.telenav.cloud.search.autonavi.entity.response.Ats;
+import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
+import com.telenav.cloud.search.autonavi.entity.response.Poi;
+import com.telenav.cloud.search.autonavi.entity.response.PoiList;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;

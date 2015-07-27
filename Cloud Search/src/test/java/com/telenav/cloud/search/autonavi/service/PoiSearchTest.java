@@ -1,7 +1,7 @@
 package com.telenav.cloud.search.autonavi.service;
 
-import com.telenav.cloud.search.autonavi.entity.poi_generate.AutonaviResponse;
-import com.telenav.cloud.search.autonavi.entity.poi_generate.Poi;
+import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
+import com.telenav.cloud.search.autonavi.entity.response.Poi;
 import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
 import com.telenav.cloud.search.autonavi.entity.request.Point;
 import com.telenav.cloud.search.autonavi.entity.request.Rectangle;

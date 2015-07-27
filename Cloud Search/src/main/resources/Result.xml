@@ -1,0 +1,47 @@
+<ats>
+    <version>2.0 - 2.0.5183.1425</version>
+    <result>true</result>
+    <code>1</code>
+    <message>Successful.</message>
+    <timestamp>1436862148</timestamp>
+    <total>1</total>
+    <poi_list>
+        <poi>
+            <rating>3.5</rating>
+            <tel>021-39215700</tel>
+            <hasdeep>1</hasdeep>
+            <weight>0.204515</weight>
+            <areacode>021</areacode>
+            <postcode/>
+            <keywords/>
+            <id>B0FFFO4EMD</id>
+            <ranksearch/>
+            <citycode>310000</citycode>
+            <checked>2</checked>
+            <introduction/>
+            <districtname>嘉定区</districtname>
+            <latitude>31.288097</latitude>
+            <type>餐饮服务;外国餐厅;西餐厅(综合风味)</type>
+            <longitude_entrance/>
+            <opentime/>
+            <provincename>上海市</provincename>
+            <typecode>050201</typecode>
+            <latitude_entrance/>
+            <cityname>上海市</cityname>
+            <longitude_exit/>
+            <latitude_exit/>
+            <provincecode>310000</provincecode>
+            <address>兆丰路2号</address>
+            <localid/>
+            <introduction_chinese/>
+            <districtcode>310114</districtcode>
+            <name>希尔顿逸林酒店玉兰轩西餐厅</name>
+            <url/>
+            <adcode>310114</adcode>
+            <longitude>121.161500</longitude>
+            <deepinfo>0</deepinfo>
+            <average>0</average>
+            <distance>944.95</distance>
+        </poi>
+    </poi_list>
+</ats>

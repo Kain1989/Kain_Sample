@@ -1,6 +1,6 @@
 package com.telenav.cloud.search.autonavi.service;
 
-import com.telenav.cloud.search.autonavi.entity.poi_generate.AutonaviResponse;
+import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
 import com.telenav.cloud.search.autonavi.generator.AutonaviSearchRequestGenerator;
 import org.apache.log4j.Logger;

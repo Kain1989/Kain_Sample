@@ -1,4 +1,4 @@
-package com.telenav.cloud.search.autonavi.entity.poi_generate;
+package com.telenav.cloud.search.autonavi.entity.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

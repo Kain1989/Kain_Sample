@@ -1,6 +1,6 @@
 package com.telenav.cloud.search.autonavi.service;
 
-import com.telenav.cloud.search.autonavi.entity.poi_generate.AutonaviResponse;
+import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
 import com.telenav.cloud.search.autonavi.entity.request.Rectangle;
 import com.telenav.cloud.search.autonavi.entity.request.RequestKeyConstants;
