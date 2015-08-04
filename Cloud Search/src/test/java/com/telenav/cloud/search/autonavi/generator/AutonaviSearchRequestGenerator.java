@@ -61,7 +61,6 @@ public class AutonaviSearchRequestGenerator {
         AutonaviSearchRequest request = generateBaseRequest();
         request.setDataTypes(new ArrayList<DataType>());
 
-        request.setLocation(new Point(121.521646, 31.239305));
 
         return request;
     }

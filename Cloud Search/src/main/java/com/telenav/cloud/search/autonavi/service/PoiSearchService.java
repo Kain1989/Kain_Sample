@@ -1,15 +1,14 @@
 package com.telenav.cloud.search.autonavi.service;
 
-import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
 import com.telenav.cloud.search.autonavi.entity.request.Rectangle;
 import com.telenav.cloud.search.autonavi.entity.request.RequestKeyConstants;
 import com.telenav.cloud.search.autonavi.entity.request.RequestValueConstants;
+import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.exception.AuthenticationBuildException;
 import com.telenav.cloud.search.autonavi.exception.URLBuildException;
 import com.telenav.cloud.search.autonavi.model.type.DataType;
 import com.telenav.cloud.search.autonavi.model.type.QueryType;
-import com.telenav.cloud.search.autonavi.test.WebConstKeys;
 import com.telenav.cloud.search.autonavi.utils.config.TelenavConfiguration;
 import com.telenav.cloud.search.autonavi.utils.http.TelenavHttpClient;
 import org.apache.commons.lang.StringUtils;
@@ -133,7 +132,7 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
         }
 
         authentication.append(RequestValueConstants.AUTHENCATION_SEPERATOR);
-        authentication.append(WebConstKeys.Customer_Key_Telenav);
+        authentication.append(TelenavConfiguration.getInstance().getCustomerKey());
         logger.info("Authentication string is : " + authentication);
         return authentication.toString();
     }

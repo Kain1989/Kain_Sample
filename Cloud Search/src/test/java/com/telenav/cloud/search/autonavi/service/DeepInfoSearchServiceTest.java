@@ -1,20 +1,20 @@
 package com.telenav.cloud.search.autonavi.service;
 
-import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
+import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.generator.AutonaviSearchRequestGenerator;
 import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
- * Created by zfshi on 7/24/2015.
+ * Created by zfshi on 7/28/2015.
  */
-public class GeoCodeSearchServiceTest {
+public class DeepInfoSearchServiceTest {
 
     private static Logger logger = Logger.getLogger(GeoCodeSearchServiceTest.class);
 
-    private GeoCodeSearchService searchService = GeoCodeSearchService.getInstance();
+    private DeepInfoSearchService searchService = DeepInfoSearchService.getInstance();
 
     @BeforeClass
     public void setupBefore() {
@@ -23,8 +23,7 @@ public class GeoCodeSearchServiceTest {
     @Test
     public void test() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generateGeoCodeRequest();
-        request.setAddress("仙霞路1088");
-        request.setOneRow(false);
+        request.setId("B00150F6D6");
         AutonaviResponse response = null;
         try {
             response = searchService.search(request);
@@ -34,3 +33,4 @@ public class GeoCodeSearchServiceTest {
         System.out.println(response);
     }
 }
+

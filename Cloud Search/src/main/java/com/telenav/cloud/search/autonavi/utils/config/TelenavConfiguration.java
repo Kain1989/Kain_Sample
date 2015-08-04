@@ -22,6 +22,12 @@ public class TelenavConfiguration {
 
     private static final String GEO_CODE_URL_PREFIX = "url.web.search.geocode";
 
+    private static final String DEEP_INFO_URL_PREFIX = "url.web.search.deepinfo";
+
+    private static final String CUSTOMER_NAME = "customer.name";
+
+    private static final String CUSTOMER_KEY = "customer.key";
+
     private static Object obj = new Object();
 
     private static TelenavConfiguration instance;
@@ -58,7 +64,19 @@ public class TelenavConfiguration {
         return props.getProperty(SUGGEST_URL_PREFIX);
     }
 
+    public String getCustomerName() {
+        return props.getProperty(CUSTOMER_NAME);
+    }
+
     public String getGeoCodeUrlPrefix() {
         return props.getProperty(GEO_CODE_URL_PREFIX);
+    }
+
+    public String getDeepInfoUrlPrefix() {
+        return props.getProperty(DEEP_INFO_URL_PREFIX);
+    }
+
+    public String getCustomerKey() {
+        return props.getProperty(CUSTOMER_KEY);
     }
 }

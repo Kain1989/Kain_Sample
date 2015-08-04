@@ -64,7 +64,7 @@ public class PoiSearchTest {
     public void testKeywordsSearch() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generatePoiKeywordsRequest();
         request.setQueryType(QueryType.KEYWORDS);
-        request.setKeywords("东方明珠");
+        request.setKeywords("仙霞路1011");
         AutonaviResponse response = null;
         try {
             response = poiService.search(request);

@@ -1,5 +1,6 @@
 package com.telenav.cloud.search.autonavi.service;
 
+import com.telenav.cloud.search.autonavi.entity.request.Point;
 import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
 import com.telenav.cloud.search.autonavi.generator.AutonaviSearchRequestGenerator;
@@ -23,6 +24,7 @@ public class ReverseGeoCodeSearchServiceTest {
     @Test
     public void test() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generateReverseCodeRequest();
+        request.setLocation(new Point(121.39796,31.205883));
         AutonaviResponse response = null;
         try {
             response = searchService.search(request);

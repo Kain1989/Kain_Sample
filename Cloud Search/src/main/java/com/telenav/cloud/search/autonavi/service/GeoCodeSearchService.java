@@ -1,11 +1,10 @@
 package com.telenav.cloud.search.autonavi.service;
 
-import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.entity.request.AutonaviSearchRequest;
 import com.telenav.cloud.search.autonavi.entity.request.RequestKeyConstants;
 import com.telenav.cloud.search.autonavi.entity.request.RequestValueConstants;
+import com.telenav.cloud.search.autonavi.entity.response.AutonaviResponse;
 import com.telenav.cloud.search.autonavi.exception.AuthenticationBuildException;
-import com.telenav.cloud.search.autonavi.test.WebConstKeys;
 import com.telenav.cloud.search.autonavi.utils.config.TelenavConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -62,7 +61,7 @@ public class GeoCodeSearchService extends SearchService<AutonaviResponse> {
         authentication.append(request.getAddress());
 
         authentication.append(RequestValueConstants.AUTHENCATION_SEPERATOR);
-        authentication.append(WebConstKeys.Customer_Key_Telenav);
+        authentication.append(TelenavConfiguration.getInstance().getCustomerKey());
         logger.info("Authentication string is : " + authentication);
         return authentication.toString();
     }
