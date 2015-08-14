@@ -23,7 +23,7 @@ public class GeoCodeSearchServiceTest {
     @Test
     public void test() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generateGeoCodeRequest();
-        request.setAddress("仙霞路1088");
+        request.setAddress("东泉路10");
         request.setOneRow(false);
         AutonaviResponse response = null;
         try {

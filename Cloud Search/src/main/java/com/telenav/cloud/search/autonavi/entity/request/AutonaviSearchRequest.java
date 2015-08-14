@@ -62,6 +62,8 @@ public class AutonaviSearchRequest {
 
     private List<DataType> dataTypes;
 
+    private List<Point> routes;
+
     public Long getRange() {
         return range;
     }
@@ -261,4 +263,13 @@ public class AutonaviSearchRequest {
     public void setDataTypes(List<DataType> dataTypes) {
         this.dataTypes = dataTypes;
     }
+
+    public List<Point> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Point> routes) {
+        this.routes = routes;
+    }
+
 }

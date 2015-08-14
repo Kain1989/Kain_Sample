@@ -24,7 +24,7 @@ public class ReverseGeoCodeSearchServiceTest {
     @Test
     public void test() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generateReverseCodeRequest();
-        request.setLocation(new Point(121.39796,31.205883));
+        request.setLocation(new Point(121.39553, 31.20778));
         AutonaviResponse response = null;
         try {
             response = searchService.search(request);

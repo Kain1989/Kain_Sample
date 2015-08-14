@@ -29,6 +29,8 @@ public class TelenavHttpClient {
     private static TelenavHttpClient instance;
 
     private static Object obj = new Object();
+    
+    private CloseableHttpClient httpClient;
 
     public static TelenavHttpClient getInstance() {
         synchronized (obj) {
@@ -52,14 +54,16 @@ public class TelenavHttpClient {
                 .setSocketTimeout(TelenavHttpParameters.SOCKET_TIMEOUT)
                 .setConnectTimeout(TelenavHttpParameters.CONNECT_TIMEOUT)
                 .build();
+
+        httpClient = HttpClients.custom().
+                setConnectionManager(connectionManager).
+                setRetryHandler(retryHandler).
+                setDefaultRequestConfig(requestConfig).build();
+
     }
 
     public TelenavHttpResponse doGet(String url) throws IOException {
         TelenavHttpResponse telenavResponse = new TelenavHttpResponse();
-        CloseableHttpClient httpClient = HttpClients.custom().
-                setConnectionManager(connectionManager).
-                setRetryHandler(retryHandler).
-                setDefaultRequestConfig(requestConfig).build();
         HttpGet httpget = new HttpGet(url);
         logger.info("Url before send out :" + url);
         CloseableHttpResponse response = httpClient.execute(httpget);
@@ -86,7 +90,7 @@ public class TelenavHttpClient {
         String body = "";
         if (entity1 != null) {
             body = EntityUtils.toString(entity1);
-            logger.info("Response Body is : " + body);
+            logger.debug("Response Body is : " + body);
         }
         EntityUtils.consume(entity1);
         return body;

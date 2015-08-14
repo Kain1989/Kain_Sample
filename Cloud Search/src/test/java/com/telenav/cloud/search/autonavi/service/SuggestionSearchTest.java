@@ -25,7 +25,7 @@ public class SuggestionSearchTest {
     public void TestSearch() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generateInputSuggestionRequest();
 //        request.setQueryType(QueryType.ID);
-        request.setWords("sh");
+        request.setWords("xianxialu");
 //        request.setLanguage("zh");
         AutonaviResponse response = null;
         try {
