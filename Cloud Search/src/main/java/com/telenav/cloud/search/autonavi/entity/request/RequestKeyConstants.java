@@ -48,5 +48,7 @@ public class RequestKeyConstants {
     public static final String CATEGORY = "category";
 
     public static final String ADCODE = "adcode";
+
+    public static final String GEO_LINE = "geoline";
 }
 

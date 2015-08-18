@@ -90,7 +90,7 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
             params.put(RequestKeyConstants.KEYWORDS, request.getKeywords());
         }
         if (request.getCategoryList() != null && request.getCategoryList().size() > 0) {
-            params.put(RequestKeyConstants.CATEGORY, StringUtils.join(request.getCategoryList(), "|"));
+            params.put(RequestKeyConstants.CATEGORY, request.generateCategoryQueryString());
         }
         if (request.getLocation() != null) {
             params.put(RequestKeyConstants.LONGITUDE, request.getLocation().getLongitude());

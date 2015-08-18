@@ -70,5 +70,13 @@ public class AutonaviSearchRequestGenerator {
 
         return request;
     }
+
+    public static AutonaviSearchRequest generateAlongRouteRequest() {
+        AutonaviSearchRequest request = generateBaseRequest();
+        request.setDataTypes(new ArrayList<DataType>());
+
+
+        return request;
+    }
 }
 

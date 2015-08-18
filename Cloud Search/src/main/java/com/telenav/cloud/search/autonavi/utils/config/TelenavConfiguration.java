@@ -24,6 +24,8 @@ public class TelenavConfiguration {
 
     private static final String DEEP_INFO_URL_PREFIX = "url.web.search.deepinfo";
 
+    private static final String ALONG_ROUTE_URL_PREFIX = "url.web.search.alongroute";
+
     private static final String CUSTOMER_NAME = "customer.name";
 
     private static final String CUSTOMER_KEY = "customer.key";
@@ -70,6 +72,10 @@ public class TelenavConfiguration {
 
     public String getGeoCodeUrlPrefix() {
         return props.getProperty(GEO_CODE_URL_PREFIX);
+    }
+
+    public String getAlongRouteUrlPrefix() {
+        return props.getProperty(ALONG_ROUTE_URL_PREFIX);
     }
 
     public String getDeepInfoUrlPrefix() {

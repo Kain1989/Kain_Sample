@@ -4,6 +4,7 @@ package com.telenav.cloud.search.autonavi.entity.request;
 import com.telenav.cloud.search.autonavi.model.type.DataType;
 import com.telenav.cloud.search.autonavi.model.type.QueryType;
 import com.telenav.cloud.search.autonavi.model.type.SortRule;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  * Created by zfshi on 6/30/2015.
  */
 public class AutonaviSearchRequest {
+
+    public static final String GEO_LINE_SEPERATOR = ";";
 
     private Long range;
 
@@ -62,7 +65,24 @@ public class AutonaviSearchRequest {
 
     private List<DataType> dataTypes;
 
-    private List<Point> routes;
+    private List<Point> geoLine;
+
+    public String generateCategoryQueryString() {
+        return StringUtils.join(categoryList, "|");
+    }
+
+    public String generateGeoLineString() {
+        StringBuilder lineStringBuilder = new StringBuilder();
+        for (Point point : geoLine) {
+            lineStringBuilder.append(point.getLongitude());
+            lineStringBuilder.append(GEO_LINE_SEPERATOR);
+            lineStringBuilder.append(point.getLatitude());
+            lineStringBuilder.append(GEO_LINE_SEPERATOR);
+        }
+        String lineString = lineStringBuilder.toString();
+        lineString = lineString.substring(0, lineString.length() - 1);
+        return lineString;
+    }
 
     public Long getRange() {
         return range;
@@ -264,12 +284,12 @@ public class AutonaviSearchRequest {
         this.dataTypes = dataTypes;
     }
 
-    public List<Point> getRoutes() {
-        return routes;
+    public List<Point> getGeoLine() {
+        return geoLine;
     }
 
-    public void setRoutes(List<Point> routes) {
-        this.routes = routes;
+    public void setGeoLine(List<Point> geoLine) {
+        this.geoLine = geoLine;
     }
 
 }

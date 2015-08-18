@@ -64,7 +64,7 @@ public class PoiSearchTest {
     public void testKeywordsSearch() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generatePoiKeywordsRequest();
         request.setQueryType(QueryType.KEYWORDS);
-        request.setKeywords("xianxialu333");
+        request.setKeywords("江杨南路1290号");
         request.setLocation(new Point(121.521646, 31.239305));
         AutonaviResponse response = null;
         try {
@@ -100,7 +100,7 @@ public class PoiSearchTest {
         request.setQueryType(QueryType.KEYWORDS);
 //        request.setCategory("050302");
         request.setLocation(new Point(121.521646, 31.239305));
-        request.setKeywords("停车场");
+        request.setKeywords("江杨南路1286号");
         AutonaviResponse response = null;
         try {
             response = poiService.search(request);
