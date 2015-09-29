@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polygon</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    // This example creates a simple polygon representing the Bermuda Triangle.
+var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 31.233479,
+                lng: 121.506760
+            },
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+
+        // Define the LatLng coordinates for the polygon's path.
+
+        var geohashes = [
+            "wt"];
+        for (var i = 0; i < geohashes.length; i++) {
+            var geohash_bounds = get_bounds(geohashes[i]);
+
+            var triangleCoords = [
+                geohash_bounds.se,
+                geohash_bounds.sw,
+                geohash_bounds.nw,
+                geohash_bounds.ne
+            ];
+
+            // Construct the polygon.
+            var bermudaTriangle = new google.maps.Polygon({
+                paths: triangleCoords,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35
+            });
+            bermudaTriangle.setMap(map);
+        }
+
+    }
+
+
+    BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';
+
+    get_bounds = function (geohash) {
+        if (geohash.length == 0) throw new Error('Invalid geohash');
+
+        geohash = geohash.toLowerCase();
+
+        var evenBit = true;
+        var latMin = -90, latMax = 90;
+        var lonMin = -180, lonMax = 180;
+
+        for (var i = 0; i < geohash.length; i++) {
+            var chr = geohash.charAt(i);
+            var idx = BASE32.indexOf(chr);
+            if (idx == -1) throw new Error('Invalid geohash');
+
+            for (var n = 4; n >= 0; n--) {
+                var bitN = idx >> n & 1;
+                if (evenBit) {
+                    // longitude
+                    var lonMid = (lonMin + lonMax) / 2;
+                    if (bitN == 1) {
+                        lonMin = lonMid;
+                    } else {
+                        lonMax = lonMid;
+                    }
+                } else {
+                    // latitude
+                    var latMid = (latMin + latMax) / 2;
+                    if (bitN == 1) {
+                        latMin = latMid;
+                    } else {
+                        latMax = latMid;
+                    }
+                }
+                evenBit = !evenBit;
+            }
+        }
+
+        var bounds = {
+            sw: {lat: latMin, lng: lonMin},
+            se: {lat: latMin, lng: lonMax},
+            ne: {lat: latMax, lng: lonMax},
+            nw: {lat: latMax, lng: lonMin}
+        };
+
+        return bounds;
+    };
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCn7FO3mDyDq21-0ZAQ0nJVWwGDzD-ugwo&signed_in=true&callback=initMap"></script>
+</body>
+</html>
