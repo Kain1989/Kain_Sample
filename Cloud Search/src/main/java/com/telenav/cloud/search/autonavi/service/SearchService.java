@@ -66,18 +66,22 @@ public abstract class SearchService<T> {
 
     protected abstract String getAuthenticationString(AutonaviSearchRequest request) throws AuthenticationBuildException;
 
-    public T search(AutonaviSearchRequest request) throws AuthenticationBuildException, URLBuildException {
-        T result = null;
-        TelenavHttpResponse response = null;
+    protected URI generateUri(AutonaviSearchRequest request) throws URLBuildException, AuthenticationBuildException {
         Map<String, Object> params = this.generateQueryParameters(request);
         if (params == null) {
             throw new URLBuildException("Parameters are null, could not execute request");
         }
         URI uri = TelenavUriBuilder.build(this.urlPrefix, params);
         if (uri == null) {
-            logger.error("Got null uri , uri prefix:" + this.urlPrefix + ", params:" + params);
-            return null;
+            throw new URLBuildException("Got null uri , uri prefix:" + this.urlPrefix + ", params:" + params);
         }
+        return TelenavUriBuilder.build(this.urlPrefix, params);
+    }
+
+    public T search(AutonaviSearchRequest request) throws AuthenticationBuildException, URLBuildException {
+        T result = null;
+        TelenavHttpResponse response = null;
+        URI uri = generateUri(request);
         try {
             response = httpClient.doGet(uri.toString());
         } catch (IOException e) {
@@ -88,16 +92,21 @@ public abstract class SearchService<T> {
             return null;
         }
         if (response.getStatus() == HttpStatus.SC_OK) {
-            logger.info("API call success : " + response.getBody());
+            logger.debug("API call success : " + response.getBody());
             if (!isSuccess(response)) {
                 logger.error("Do not find result");
                 return null;
             }
             result = JsonUtils.fromJson(response.getBody(), entityClass);
+            this.postProcessResult(request, result);
             return result;
         } else {
             return null;
         }
+    }
+
+    protected void postProcessResult(AutonaviSearchRequest request, T response) {
+
     }
 
     private boolean isSuccess(TelenavHttpResponse response) {

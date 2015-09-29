@@ -13,6 +13,8 @@ public class Suggestion {
     @Expose
     private Regions regions;
 
+    private String suggestUrl;
+
     /**
      * 
      * @return
@@ -49,4 +51,11 @@ public class Suggestion {
         this.regions = regions;
     }
 
+    public String getSuggestUrl() {
+        return suggestUrl;
+    }
+
+    public void setSuggestUrl(String suggestUrl) {
+        this.suggestUrl = suggestUrl;
+    }
 }

@@ -24,6 +24,7 @@ public class DeepInfoSearchServiceTest {
     public void test() {
         AutonaviSearchRequest request = AutonaviSearchRequestGenerator.generateGeoCodeRequest();
         request.setId("B00150F6D6");
+//        |B0FFFPTAP0
         AutonaviResponse response = null;
         try {
             response = searchService.search(request);

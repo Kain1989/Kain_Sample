@@ -38,7 +38,7 @@ public class SuggestionSearchTest {
 
     private void printResult(AutonaviResponse response) {
         if (response != null && response.getAts().getTipList() != null) {
-            for (String suggestion : response.getAts().getTipList().getTips()) {
+            for (String suggestion : response.getAts().getTipList()) {
                 System.out.println(suggestion);
             }
         }

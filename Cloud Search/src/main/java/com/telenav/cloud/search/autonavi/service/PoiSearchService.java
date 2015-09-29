@@ -163,7 +163,7 @@ public class PoiSearchService extends SearchService<AutonaviResponse> {
 //        poiSearch.Keywords = "滴水湖";
 //        poiSearch.City = "苏州";
         AutonaviResponse result = poiSearch.search(request);
-        System.out.println(result.getAts().getPoiList().getPois());
+//        System.out.println(result.getAts().getPoiList().getPois());
 
     }
 }
