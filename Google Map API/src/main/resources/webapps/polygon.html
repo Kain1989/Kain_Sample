@@ -35,7 +35,12 @@
 
         // Define the LatLng coordinates for the polygon's path.
 
-        var geohashes = ["ww3d4"];
+        var geohashes = ["bs"];
+        draw_polygon(geohashes);
+
+    }
+
+    draw_polygon = function(geohashes) {
         for (var i = 0; i < geohashes.length; i++) {
             var geohash_bounds = get_bounds(geohashes[i]);
 
@@ -57,24 +62,25 @@
             });
             bermudaTriangle.setMap(map);
         }
-
     }
 
-    function rebuild() {
+    rebuild = function() {
         var data = {sw_lat: map.getBounds().getSouthWest().lat(),
             sw_lng: map.getBounds().getSouthWest().lng(),
             ne_lat: map.getBounds().getNorthEast().lat(),
             ne_lng: map.getBounds().getNorthEast().lng()};
         $.ajax({
-            url: "http://172.16.101.204:18080/entity/v4/debug/geohash/json",
+
+//            url: "http://172.16.101.204:18080/entity/v4/debug/geohash/json",
+            url: "http://localhost:18080/entity/v4/debug/geohash/json",
             dataType: "json",
             type: "get",
             data: data,
             error: function (response) {
-                alert(resopnse);
-            },
-            success: function (text) {
                 alert(response);
+            },
+            success: function (response) {
+                draw_polygon(response);
             }
         });
     }
