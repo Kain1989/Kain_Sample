@@ -23,6 +23,8 @@
 
     // This example creates a simple polygon representing the Bermuda Triangle.
     var map;
+    var new_center;
+    var new_zoom;
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {
@@ -35,8 +37,8 @@
 
         // Define the LatLng coordinates for the polygon's path.
 
-        var geohashes = ["bs"];
-        draw_polygon(geohashes);
+//        var geohashes = ["8"];
+//        draw_polygon(geohashes);
 
     }
 
@@ -65,14 +67,22 @@
     }
 
     rebuild = function() {
+        new_center = map.getCenter();
+        new_zoom = map.zoom;
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+        map.setCenter(new_center);
+        map.setZoom(new_zoom);
         var data = {sw_lat: map.getBounds().getSouthWest().lat(),
             sw_lng: map.getBounds().getSouthWest().lng(),
             ne_lat: map.getBounds().getNorthEast().lat(),
             ne_lng: map.getBounds().getNorthEast().lng()};
         $.ajax({
 
-//            url: "http://172.16.101.204:18080/entity/v4/debug/geohash/json",
-            url: "http://localhost:18080/entity/v4/debug/geohash/json",
+            url: "http://172.16.101.204:18080/entity/v4/debug/geohash/json",
+//            url: "http://localhost:18080/entity/v4/debug/geohash/json",
             dataType: "json",
             type: "get",
             data: data,
