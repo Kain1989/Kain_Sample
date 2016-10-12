@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="../IOC_Container.xsd"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="IOC_Container.xsd">
+
+    <import resource="appContext2.xml" />
+
+    <bean id="test" class="com.kain.ioc.container.test.TestInjection">
+        <property name="name">
+            <value>Test</value>
+        </property>
+    </bean>
+
+    <bean id="entity" class="com.kain.ioc.container.test.model.Entity" lazy="false">
+        <property name="list">
+            <list>
+                <value>list0</value>
+                <value>list1</value>
+                <ref>test</ref>
+            </list>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="key0" value="key0" />
+                <entry key="key1" ref="test" />
+            </map>
+        </property>
+        <property name="name">
+            <value>ICO_Container</value>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="beans">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="import"/>
+        <xs:element maxOccurs="unbounded" ref="bean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="import">
+    <xs:complexType>
+      <xs:attribute name="resource" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="bean">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="property"/>
+      </xs:sequence>
+      <xs:attribute name="class" use="required" type="xs:NCName"/>
+      <xs:attribute name="id" use="required" type="xs:NCName"/>
+      <xs:attribute name="lazy" type="xs:boolean"/>
+      <xs:attribute name="scope" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="property">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="value"/>
+        <xs:element ref="list"/>
+        <xs:element ref="map"/>
+      </xs:choice>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="list">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="value"/>
+        <xs:element ref="ref"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ref" type="xs:NCName"/>
+  <xs:element name="map">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="entry"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="entry">
+    <xs:complexType>
+      <xs:attribute name="key" use="required" type="xs:NCName"/>
+      <xs:attribute name="ref" type="xs:NCName"/>
+      <xs:attribute name="value" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value" type="xs:NCName"/>
+</xs:schema>
