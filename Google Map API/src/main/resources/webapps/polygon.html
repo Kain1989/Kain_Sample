@@ -15,9 +15,34 @@
         #map {
             height: 100%;
         }
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto','sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #floating-panel {
+            margin-left: -52px;
+        }
     </style>
+
+
 </head>
 <body>
+<div id="floating-panel">
+    <button id="drop" onclick="rebuild()">Redraw GeoHash</button>
+    <button id="draw" onclick="drawPoint()">Draw Point</button>
+    Point(split by ";"):<input id="point" type="text" name="point">
+</div>
 <div id="map"></div>
 <script>
 
@@ -42,7 +67,7 @@
 
     }
 
-    draw_polygon = function(geohashes) {
+    draw_polygon = function (geohashes) {
         for (var i = 0; i < geohashes.length; i++) {
             var geohash_bounds = get_bounds(geohashes[i]);
 
@@ -66,7 +91,7 @@
         }
     }
 
-    rebuild = function() {
+    rebuild = function () {
         new_center = map.getCenter();
         new_zoom = map.zoom;
 
@@ -75,10 +100,12 @@
         });
         map.setCenter(new_center);
         map.setZoom(new_zoom);
-        var data = {sw_lat: map.getBounds().getSouthWest().lat(),
+        var data = {
+            sw_lat: map.getBounds().getSouthWest().lat(),
             sw_lng: map.getBounds().getSouthWest().lng(),
             ne_lat: map.getBounds().getNorthEast().lat(),
-            ne_lng: map.getBounds().getNorthEast().lng()};
+            ne_lng: map.getBounds().getNorthEast().lng()
+        };
         $.ajax({
 
             url: "http://172.16.101.204:18080/entity/v4/debug/geohash/json",
@@ -93,6 +120,27 @@
                 draw_polygon(response);
             }
         });
+    }
+
+    drawPoint = function () {
+        var points = $("#point").val();
+        var pointList = points.split(";");
+
+        for (var i = 0; i < pointList.length; i++) {
+            var point = pointList[i];
+
+            var position = {
+                lat: parseFloat(point.split(",")[0]),
+                lng: parseFloat(point.split(",")[1])
+            };
+
+            var marker = new google.maps.Marker({
+                position: position,
+//                title: ,
+                map: map
+            });
+
+        }
     }
 
 

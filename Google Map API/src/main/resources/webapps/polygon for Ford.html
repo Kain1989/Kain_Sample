@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polygon</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto','sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #floating-panel {
+            margin-left: -52px;
+        }
+    </style>
+
+
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    // This example creates a simple polygon representing the Bermuda Triangle.
+    var map;
+    var new_center;
+    var new_zoom;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 39.98796,
+                lng: 116.40123
+            },
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+
+        // Define the LatLng coordinates for the polygon's path.
+
+        var geohashes = ["wx4ene","wx4eng","wx4enk","wx4enm","wx4enp","wx4enq","wx4enr","wx4ens","wx4ent","wx4enu","wx4env","wx4enw","wx4enx","wx4eny","wx4enz","wx4ep4","wx4ep5","wx4ep6","wx4ep7","wx4epd","wx4epe","wx4epf","wx4epg","wx4eph","wx4epj","wx4epk","wx4epm","wx4epn","wx4epp","wx4epq","wx4epr","wx4eps","wx4ept","wx4epu","wx4epv","wx4epw","wx4epx","wx4epy","wx4epz","wx4eq0","wx4eq1","wx4eq2","wx4eq3","wx4eq4","wx4eq5","wx4eq6","wx4eq7","wx4eq8","wx4eq9","wx4eqb","wx4eqc","wx4eqd","wx4eqe","wx4eqf","wx4eqg","wx4eqh","wx4eqj","wx4eqk","wx4eqm","wx4eqn","wx4eqq","wx4eqr","wx4eqs","wx4eqt","wx4equ","wx4eqv","wx4eqw","wx4eqx","wx4eqy","wx4eqz","wx4er","wx4ew2","wx4ew8","wx4ew9","wx4ewb","wx4ewc","wx4ewf","wx4ex0","wx4ex1","wx4ex2","wx4ex3","wx4ex4","wx4ex5","wx4ex6","wx4ex7","wx4ex8","wx4ex9","wx4exb","wx4exc","wx4exd","wx4exe","wx4exf","wx4g05","wx4g0h","wx4g0j","wx4g0k","wx4g0m","wx4g0n","wx4g0p","wx4g0q","wx4g0r","wx4g0w","wx4g0x","wx4g20","wx4g21","wx4g22","wx4g23","wx4g24","wx4g25","wx4g26","wx4g27","wx4g28","wx4g29","wx4g2d","wx4g2e","wx4g2f","wx4g2g","wx4g2h","wx4g2j","wx4g2k","wx4g2m","wx4g2n","wx4g2p","wx4g2q","wx4g2r","wx4g2s","wx4g2t","wx4g2w","wx4g2x","wx4g80","wx4g81","wx4g82","wx4g83","wx4g84"];
+        draw_polygon(geohashes);
+        drawPoint();
+
+    }
+
+    draw_polygon = function (geohashes) {
+        for (var i = 0; i < geohashes.length; i++) {
+            var geohash_bounds = get_bounds(geohashes[i]);
+
+            var triangleCoords = [
+                geohash_bounds.se,
+                geohash_bounds.sw,
+                geohash_bounds.nw,
+                geohash_bounds.ne
+            ];
+
+            // Construct the polygon.
+            var bermudaTriangle = new google.maps.Polygon({
+                paths: triangleCoords,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35
+            });
+            bermudaTriangle.setMap(map);
+        }
+    }
+
+    drawPoint = function () {
+        var points = "39.98796,116.40123;39.98294,116.39738;39.98208,116.39858;39.98589,116.39658";
+        var pointList = points.split(";");
+
+        for (var i = 0; i < pointList.length; i++) {
+            var point = pointList[i];
+
+            var position = {
+                lat: parseFloat(point.split(",")[0]),
+                lng: parseFloat(point.split(",")[1])
+            };
+
+            var marker = new google.maps.Marker({
+                position: position,
+//                title: ,
+                map: map
+            });
+
+        }
+    }
+
+
+    BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';
+
+    get_bounds = function (geohash) {
+        if (geohash.length == 0) throw new Error('Invalid geohash');
+
+        geohash = geohash.toLowerCase();
+
+        var evenBit = true;
+        var latMin = -90, latMax = 90;
+        var lonMin = -180, lonMax = 180;
+
+        for (var i = 0; i < geohash.length; i++) {
+            var chr = geohash.charAt(i);
+            var idx = BASE32.indexOf(chr);
+            if (idx == -1) throw new Error('Invalid geohash');
+
+            for (var n = 4; n >= 0; n--) {
+                var bitN = idx >> n & 1;
+                if (evenBit) {
+                    // longitude
+                    var lonMid = (lonMin + lonMax) / 2;
+                    if (bitN == 1) {
+                        lonMin = lonMid;
+                    } else {
+                        lonMax = lonMid;
+                    }
+                } else {
+                    // latitude
+                    var latMid = (latMin + latMax) / 2;
+                    if (bitN == 1) {
+                        latMin = latMid;
+                    } else {
+                        latMax = latMid;
+                    }
+                }
+                evenBit = !evenBit;
+            }
+        }
+
+        var bounds = {
+            sw: {lat: latMin, lng: lonMin},
+            se: {lat: latMin, lng: lonMax},
+            ne: {lat: latMax, lng: lonMax},
+            nw: {lat: latMax, lng: lonMin}
+        };
+
+        return bounds;
+    };
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCn7FO3mDyDq21-0ZAQ0nJVWwGDzD-ugwo&signed_in=true&callback=initMap"></script>
+</body>
+</html>

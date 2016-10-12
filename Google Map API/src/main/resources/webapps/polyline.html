@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polygon</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto','sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #floating-panel {
+            margin-left: -52px;
+        }
+    </style>
+</head>
+<body>
+<div id="floating-panel">
+    <button id="drop" onclick="rebuild()">Search</button>
+    Street Name:<input id="street" type="text" name="street">
+    City:<input id="city" type="text" name="city">
+	Region:<input id="region" type="text" name="region" value="CN">
+</div>
+<div id="map"></div>
+<script>
+
+    // This example creates a simple polygon representing the Bermuda Triangle.
+    var map;
+    var new_center;
+    var new_zoom;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 31.233479,
+                lng: 121.506760
+            },
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+
+        // Define the LatLng coordinates for the polygon's path.
+
+    }
+
+    draw_polyline = function (polylines) {
+        for (var i = 0; i < polylines.length; i++) {
+
+            var polyline = [polylines[i].start, polylines[i].end];
+
+            // Construct the polygon.
+            var flightPath = new google.maps.Polyline({
+                path: polyline,
+                geodesic: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+            flightPath.setMap(map);
+            var icon;
+
+            if (polylines[i].type == "point") {
+                icon = "http://cn-ysun.china.telenav.com/GEN3/test/marker/number_1.png"
+            } else {
+                icon = "http://cn-ysun.china.telenav.com/GEN3/test/marker/number_0.png"
+            }
+
+            var marker = new google.maps.Marker({
+                position: polylines[i].start,
+//                label: polylines[i].name,
+                icon: icon,
+                title: polylines[i].name,
+                map: map
+            });
+
+        }
+    }
+
+    rebuild = function () {
+        var street_name = $("#street").val();
+        var city_name = $("#city").val();
+		var region_name = $("#region").val();
+        var data = {
+            street_name: street_name,
+            city_name: city_name,
+			region: region_name
+        };
+        $.ajax({
+
+            url: "http://172.16.101.204:18080/entity/v4/debug/street/json",
+//            url: "http://localhost:18080/entity/v4/debug/geohash/json",
+            dataType: "json",
+            type: "get",
+            data: data,
+            error: function (response) {
+                alert(response);
+            },
+            success: function (response) {
+                if (response != null) {
+                    new_center = response[0].start;
+                    new_zoom = map.zoom;
+
+                    map = new google.maps.Map(document.getElementById('map'), {
+                        mapTypeId: google.maps.MapTypeId.TERRAIN
+                    });
+                    map.setCenter(new_center);
+                    map.setZoom(new_zoom);
+                    draw_polyline(response);
+                }
+            }
+        });
+    }
+
+
+    BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';
+
+    get_bounds = function (geohash) {
+        if (geohash.length == 0) throw new Error('Invalid geohash');
+
+        geohash = geohash.toLowerCase();
+
+        var evenBit = true;
+        var latMin = -90, latMax = 90;
+        var lonMin = -180, lonMax = 180;
+
+        for (var i = 0; i < geohash.length; i++) {
+            var chr = geohash.charAt(i);
+            var idx = BASE32.indexOf(chr);
+            if (idx == -1) throw new Error('Invalid geohash');
+
+            for (var n = 4; n >= 0; n--) {
+                var bitN = idx >> n & 1;
+                if (evenBit) {
+                    // longitude
+                    var lonMid = (lonMin + lonMax) / 2;
+                    if (bitN == 1) {
+                        lonMin = lonMid;
+                    } else {
+                        lonMax = lonMid;
+                    }
+                } else {
+                    // latitude
+                    var latMid = (latMin + latMax) / 2;
+                    if (bitN == 1) {
+                        latMin = latMid;
+                    } else {
+                        latMax = latMid;
+                    }
+                }
+                evenBit = !evenBit;
+            }
+        }
+
+        var bounds = {
+            sw: {lat: latMin, lng: lonMin},
+            se: {lat: latMin, lng: lonMax},
+            ne: {lat: latMax, lng: lonMax},
+            nw: {lat: latMax, lng: lonMin}
+        };
+
+        return bounds;
+    };
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCn7FO3mDyDq21-0ZAQ0nJVWwGDzD-ugwo&signed_in=true&callback=initMap"></script>
+</body>
+</html>
