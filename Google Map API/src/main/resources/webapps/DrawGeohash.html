@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -14,28 +15,75 @@
         #map {
             height: 100%;
         }
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto','sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #floating-panel {
+            margin-left: -52px;
+        }
     </style>
+
+
 </head>
 <body>
-<div id="map"></div>
+<div id="floating-panel">
+    <button id="draw" onclick="draw_geohash()">Draw GeoHash</button>
+    GeoHash(split by ";"):<input id="point" type="text" name="point">
+</div>
+<div id="map">
+</div>
 <script>
 
     // This example creates a simple polygon representing the Bermuda Triangle.
-var map;
+    var map;
+    var new_center;
+    var new_zoom;
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {
-                lat: 31.233479,
-                lng: 121.506760
+                lat: 33.02079,
+                lng: -96.69925
             },
-            zoom: 10,
+            zoom: 14,
             mapTypeId: google.maps.MapTypeId.TERRAIN
         });
 
         // Define the LatLng coordinates for the polygon's path.
 
-        var geohashes = [
-            "wt"];
+        //var geohashes = ["9vg5v"];
+        //draw_polygon(geohashes);
+        // drawPoint();
+
+    }
+	
+	draw_geohash = function () {
+	var geohash = $("#point").val();
+	var geohashList = geohash.split(";");
+	draw_polygon(geohashList);
+	}
+
+    draw_polygon = function (geohashes) {
+	
+		new_center = get_bounds(geohashes[0]).nw;
+        new_zoom = map.zoom;
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+		map.setCenter(new_center);
+		map.setZoom(new_zoom)
         for (var i = 0; i < geohashes.length; i++) {
             var geohash_bounds = get_bounds(geohashes[i]);
 
@@ -57,7 +105,29 @@ var map;
             });
             bermudaTriangle.setMap(map);
         }
+		
+//                    map.setCenter(get_bounds(geohashes[0]).se);
+    }
 
+    drawPoint = function () {
+        var points = "33.00002,-96.79007;33.02079,-96.69925;33.02319,-96.79746";
+        var pointList = points.split(";");
+
+        for (var i = 0; i < pointList.length; i++) {
+            var point = pointList[i];
+
+            var position = {
+                lat: parseFloat(point.split(",")[0]),
+                lng: parseFloat(point.split(",")[1])
+            };
+
+            var marker = new google.maps.Marker({
+                position: position,
+//                title: ,
+                map: map
+            });
+
+        }
     }
 
 
