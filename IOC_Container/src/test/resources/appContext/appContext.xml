@@ -2,7 +2,7 @@
 
 <beans xmlns="../IOC_Container.xsd"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="IOC_Container.xsd">
+       xsi:schemaLocation="../IOC_Container.xsd">
 
     <import resource="appContext2.xml" />
 

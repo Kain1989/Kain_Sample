@@ -2,11 +2,11 @@
 
 <beans xmlns="../IOC_Container.xsd"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="IOC_Container.xsd">
+       xsi:schemaLocation="../IOC_Container.xsd">
 
     <bean id="test2" class="com.kain.ioc.container.test.TestInjection">
-        <property name="name2">
-            <value>Test</value>
+        <property name="name">
+            <value>Test2</value>
         </property>
     </bean>
 
