@@ -128,6 +128,9 @@ public class BeanDefinitionLoader {
             if (node.attribute("ref") != null) {
                 proMap.put(key, beanDefinitionMap.get(node.attribute("ref").getText()));
             }
+            if (node.element("list") != null) {
+                proMap.put(key, paarseListObject(node.element("list"), beanDefinitionMap));
+            }
         }
         return proMap;
     }

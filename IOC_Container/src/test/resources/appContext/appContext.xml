@@ -2,9 +2,9 @@
 
 <beans xmlns="../IOC_Container.xsd"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="../IOC_Container.xsd">
+       xsi:noNamespaceSchemaLocation="../IOC_Container.xsd">
 
-    <import resource="appContext2.xml" />
+    <import resource="appContext2.xml"/>
 
     <bean id="test" class="com.kain.ioc.container.test.TestInjection">
         <property name="name">
@@ -22,8 +22,15 @@
         </property>
         <property name="map">
             <map>
-                <entry key="key0" value="key0" />
-                <entry key="key1" ref="test" />
+                <entry key="key0" value="key0"/>
+                <entry key="key1" ref="test"/>
+                <entry key="key2">
+                    <list>
+                        <value>list0</value>
+                        <value>list1</value>
+                        <ref>test</ref>
+                    </list>
+                </entry>
             </map>
         </property>
         <property name="name">

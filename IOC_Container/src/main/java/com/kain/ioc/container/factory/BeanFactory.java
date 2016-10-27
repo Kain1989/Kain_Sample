@@ -85,27 +85,10 @@ public class BeanFactory {
             return createRefInstance((BeanDefinition) propVal);
         }
         if (propVal instanceof List) {
-            List<Object> list = new ArrayList<Object>();
-            for (Object value : (List) propVal) {
-                Object obj = value;
-                if (value instanceof BeanDefinition) {
-                    obj = createRefInstance((BeanDefinition) value);
-                }
-                list.add(obj);
-            }
-            return list;
+            return createListInstance(propVal);
         }
         if (propVal instanceof Map) {
-            Map<Object, Object> map = new HashMap<Object, Object>();
-            for (Object value : ((Map) propVal).entrySet()) {
-                Object mapValue = ((Entry) value).getValue();
-                Object obj = mapValue;
-                if (mapValue instanceof BeanDefinition) {
-                    obj = createRefInstance((BeanDefinition) mapValue);
-                }
-                map.put(((Entry) value).getKey(), obj);
-            }
-            return map;
+            return createMapInstance(propVal);
         }
         return propVal;
     }
@@ -116,6 +99,34 @@ public class BeanFactory {
             obj = createInstance(propVal);
         }
         return obj;
+    }
+
+    private Object createListInstance(Object propVal) {
+        List<Object> list = new ArrayList<Object>();
+        for (Object value : (List) propVal) {
+            Object obj = value;
+            if (value instanceof BeanDefinition) {
+                obj = createRefInstance((BeanDefinition) value);
+            }
+            list.add(obj);
+        }
+        return list;
+    }
+
+    private Object createMapInstance(Object propVal) {
+        Map<Object, Object> map = new HashMap<Object, Object>();
+        for (Object value : ((Map) propVal).entrySet()) {
+            Object mapValue = ((Entry) value).getValue();
+            Object obj = mapValue;
+            if (mapValue instanceof BeanDefinition) {
+                obj = createRefInstance((BeanDefinition) mapValue);
+            }
+            if (mapValue instanceof List) {
+                obj = createListInstance(mapValue);
+            }
+            map.put(((Entry) value).getKey(), obj);
+        }
+        return map;
     }
 
     public Object getBean(String beanName) {
