@@ -60,6 +60,15 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="ref" type="xs:NCName"/>
+  <xs:element name="ref">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:NCName">
+          <xs:attribute name="excludeRegions" type="xs:NCName"/>
+          <xs:attribute name="includeRegions" type="xs:NCName"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="value" type="xs:NCName"/>
 </xs:schema>

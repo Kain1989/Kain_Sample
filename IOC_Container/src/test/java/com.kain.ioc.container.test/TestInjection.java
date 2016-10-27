@@ -1,6 +1,7 @@
 package com.kain.ioc.container.test;
 
 import com.kain.ioc.container.factory.BeanFactory;
+import com.kain.ioc.container.model.Region;
 import com.kain.ioc.container.test.model.Entity;
 import org.junit.Test;
 
@@ -15,7 +16,9 @@ public class TestInjection {
 
     @Test
     public void testInjection() throws URISyntaxException {
+        Region.updateRegion(Region.CN);
         BeanFactory context = BeanFactory.getInstance();
+
         Entity obj = (Entity) context.getBean("entity");
         System.out.println(obj.getName());
     }

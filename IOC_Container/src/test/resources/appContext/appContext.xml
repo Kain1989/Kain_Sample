@@ -17,7 +17,7 @@
             <list>
                 <value>list0</value>
                 <value>list1</value>
-                <ref>test</ref>
+                <ref includeRegions="CN">test</ref>
             </list>
         </property>
         <property name="map">
@@ -28,7 +28,7 @@
                     <list>
                         <value>list0</value>
                         <value>list1</value>
-                        <ref>test</ref>
+                        <ref excludeRegions="CN">test</ref>
                     </list>
                 </entry>
             </map>

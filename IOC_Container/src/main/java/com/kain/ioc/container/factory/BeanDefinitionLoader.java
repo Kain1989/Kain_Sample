@@ -2,7 +2,9 @@ package com.kain.ioc.container.factory;
 
 import com.kain.ioc.container.model.BeanDefinition;
 import com.kain.ioc.container.model.PropertyValue;
+import com.kain.ioc.container.model.Region;
 import com.kain.ioc.container.model.Scope;
+import org.apache.commons.collections4.CollectionUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -11,9 +13,11 @@ import org.dom4j.io.SAXReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -112,9 +116,38 @@ public class BeanDefinitionLoader {
             proList.add(listElementIte.next().getText());
         }
         for (Iterator<Element> listElementIte = list.elementIterator("ref"); listElementIte.hasNext(); ) {
-            proList.add(beanDefinitionMap.get(listElementIte.next().getText()));
+            Element refElement = listElementIte.next();
+            Set<Region> includeRegionSet = getRegionSet(refElement, "includeRegions");
+            Set<Region> excludeRegionSet = getRegionSet(refElement, "excludeRegions");
+            if (include(includeRegionSet, excludeRegionSet)) {
+                proList.add(beanDefinitionMap.get(refElement.getText()));
+            }
         }
         return proList;
+    }
+
+    private boolean include(Set<Region> includeRegionSet, Set<Region> excludeRegionSet) {
+        if (CollectionUtils.isEmpty(includeRegionSet) && CollectionUtils.isEmpty(excludeRegionSet)) {
+            return true;
+        }
+        if (CollectionUtils.isNotEmpty(includeRegionSet) && includeRegionSet.contains(Region.getCurrentRegion())) {
+            return true;
+        }
+        if (CollectionUtils.isNotEmpty(excludeRegionSet) && excludeRegionSet.contains(Region.getCurrentRegion())) {
+            return false;
+        }
+        return true;
+    }
+
+    private Set<Region> getRegionSet(Element refElement, String attribute) {
+        Set<Region> regionSet = new HashSet<Region>();
+        if (refElement.attribute(attribute) != null) {
+            String regionsStr[] = refElement.attribute(attribute).getValue().split(",");
+            for (String regionStr : regionsStr) {
+                regionSet.add(Region.parse(regionStr));
+            }
+        }
+        return regionSet;
     }
 
     private Map<String, Object> parseMapObject(Element map, Map<String, BeanDefinition> beanDefinitionMap) {
