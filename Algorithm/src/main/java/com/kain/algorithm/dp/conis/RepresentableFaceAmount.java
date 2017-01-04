@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Created on 12/29/2016.
  */
-public class FaceAmount {
+public class RepresentableFaceAmount {
 
     public static void main(String args[]) {
         int[] coins = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 25, 25, 25, 50, 50, 100};
