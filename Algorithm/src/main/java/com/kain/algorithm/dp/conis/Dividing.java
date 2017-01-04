@@ -37,22 +37,32 @@ public class Dividing {
 
     private static int solveByDp(int[] coins, int sum) {
         int MAX_SUM = 100000;
-        boolean[] array = new boolean[MAX_SUM];
+        int[] array = new int[MAX_SUM];
         for (int i = 0; i < MAX_SUM; i++) {
-            array[i] = false;
+            array[i] = -1;
         }
-        array[0] = true;
         for (int i = 0; i < coins.length; i++) {
-            for (int j = coins[i]; j <= sum; j++) {
-                if (array[j - coins[i]]) {
-                    array[j] = true;
+            array[coins[i]] = 1;
+        }
+        int tmpSum = 0;
+        for (int i = 0; i < coins.length; i++) {
+            tmpSum += coins[i];
+            for (int j = coins[i]; j <= tmpSum; j++) {
+                int step = array[j - coins[i]];
+                if (step > -1) {
+                    int tmpStep = step + array[coins[i]];
+                    if (tmpStep <= i + 1) {
+                        if (array[j] < 0 || (array[j] > 0 && array[j] > tmpStep)) {
+                            array[j] = tmpStep;
+                        }
+                    }
                 }
             }
         }
         int mid = sum / 2;
         for (int i = 0; i <= mid; i++) {
             int one = mid - i;
-            if (array[one]) {
+            if (array[one] > 0) {
                 int other = sum - one;
                 return Math.abs(one - other);
             }
