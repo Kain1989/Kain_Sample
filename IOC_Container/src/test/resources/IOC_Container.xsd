@@ -29,6 +29,7 @@
     <xs:complexType>
       <xs:choice>
         <xs:element ref="i:list"/>
+        <xs:element ref="i:ref"/>
         <xs:element ref="i:value"/>
         <xs:element ref="i:map"/>
       </xs:choice>
@@ -52,14 +53,6 @@
       <xs:attribute name="value" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="list">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="i:value"/>
-        <xs:element ref="i:ref"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="ref">
     <xs:complexType>
       <xs:simpleContent>
@@ -68,6 +61,14 @@
           <xs:attribute name="includeRegions" type="xs:NCName"/>
         </xs:extension>
       </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="list">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="i:value"/>
+        <xs:element ref="i:ref"/>
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="value" type="xs:NCName"/>

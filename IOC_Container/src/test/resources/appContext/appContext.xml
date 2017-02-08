@@ -36,6 +36,9 @@
         <property name="name">
             <value>ICO_Container</value>
         </property>
+        <property name="test">
+            <ref>test</ref>
+        </property>
     </bean>
 
 </beans>

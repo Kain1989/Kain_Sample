@@ -97,17 +97,23 @@ public class BeanDefinitionLoader {
     private Object parsePropertyValue(Element element, Map<String, BeanDefinition> beanDefinitionMap) {
         Element list = element.element("list");
         Element map = element.element("map");
+        Element ref = element.element("ref");
         if (list != null) {
             return paarseListObject(list, beanDefinitionMap);
         } else if (map != null) {
             return parseMapObject(map, beanDefinitionMap);
+        } else if (ref != null) {
+            for (Iterator<Element> listElementIte = element.elementIterator("ref"); listElementIte.hasNext(); ) {
+                Element refElement = listElementIte.next();
+                return beanDefinitionMap.get(refElement.getText());
+            }
         } else {
             for (Iterator<Element> ite1 = element.elementIterator("value"); ite1.hasNext(); ) {
                 Element node = ite1.next();
                 return node.getText();
             }
-            return null;
         }
+        return null;
     }
 
     private List<Object> paarseListObject(Element list, Map<String, BeanDefinition> beanDefinitionMap) {
@@ -133,10 +139,10 @@ public class BeanDefinitionLoader {
         if (CollectionUtils.isNotEmpty(includeRegionSet) && includeRegionSet.contains(Region.getCurrentRegion())) {
             return true;
         }
-        if (CollectionUtils.isNotEmpty(excludeRegionSet) && excludeRegionSet.contains(Region.getCurrentRegion())) {
-            return false;
+        if (CollectionUtils.isNotEmpty(excludeRegionSet) && !excludeRegionSet.contains(Region.getCurrentRegion())) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     private Set<Region> getRegionSet(Element refElement, String attribute) {

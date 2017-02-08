@@ -1,5 +1,7 @@
 package com.kain.ioc.container.test.model;
 
+import com.kain.ioc.container.test.TestInjection;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,8 @@ public class Entity {
     private List list;
 
     private Map map;
+
+    private TestInjection test;
 
     public String getName() {
         return name;
@@ -36,5 +40,13 @@ public class Entity {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public TestInjection getTest() {
+        return test;
+    }
+
+    public void setTest(TestInjection test) {
+        this.test = test;
     }
 }
