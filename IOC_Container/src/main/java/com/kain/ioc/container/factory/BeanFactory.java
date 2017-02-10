@@ -4,8 +4,7 @@ import com.kain.ioc.container.model.BeanDefinition;
 import com.kain.ioc.container.model.PropertyValue;
 import com.kain.ioc.container.model.Scope;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +36,6 @@ public class BeanFactory {
     }
 
     private void initialize() {
-//        String mainContext = CONTAINER_ROOT + MAIN_RESOURCE;
-//        load(mainContext);
         beanDefinitionMap = new BeanDefinitionLoader().load();
         initializeInstance();
     }
@@ -57,7 +54,7 @@ public class BeanFactory {
         Object obj;
         try {
             obj = beanDef.getBeanClass().newInstance();
-            retrieveBeanProperty(beanDef.getBeanClass(), obj, beanDef);
+            retrieveBeanProperty(obj, beanDef);
             return obj;
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,19 +62,24 @@ public class BeanFactory {
         return null;
     }
 
-    private void retrieveBeanProperty(Class beanClass, Object obj, BeanDefinition beanDef) throws Exception {
-        Method method;
-        java.beans.BeanInfo beanInfo = java.beans.Introspector.getBeanInfo(beanClass);
-        java.beans.PropertyDescriptor proDescriptor[] = beanInfo.getPropertyDescriptors();
+    private void retrieveBeanProperty(Object obj, BeanDefinition beanDef) throws Exception {
         for (PropertyValue propVal : beanDef.getPropertyValues()) {
-            for (PropertyDescriptor aProDescriptor : proDescriptor) {
-                if (aProDescriptor.getName().equalsIgnoreCase(propVal.getName())) {
-                    Object value = createPropertyInstance(propVal.getValue());
-                    method = aProDescriptor.getWriteMethod();
-                    method.invoke(obj, value);
-                }
+            Field field = getDeclaredField(obj.getClass(), propVal.getName());
+            Object value = createPropertyInstance(propVal.getValue());
+            field.setAccessible(true);
+            field.set(obj, value);
+        }
+    }
+
+    private Field getDeclaredField(Class clasz, String filedName) {
+        try {
+            return clasz.getDeclaredField(filedName);
+        } catch (NoSuchFieldException e) {
+            if (clasz.getGenericSuperclass() != null) {
+                return getDeclaredField(clasz.getSuperclass(), filedName);
             }
         }
+        return null;
     }
 
     private Object createPropertyInstance(Object propVal) {
