@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="../IOC_Container.xsd"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="../IOC_Container.xsd">
+<beans>
 
     <import resource="appContext2.xml"/>
 
@@ -34,7 +32,7 @@
             </map>
         </property>
         <property name="name">
-            <value>ICO_Container</value>
+            <value>"ICO_Container"</value>
         </property>
         <property name="test">
             <ref>test</ref>
