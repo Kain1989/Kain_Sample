@@ -22,6 +22,9 @@ public class Utf8Conterter {
     public static List<String> convertToUtf8(String input) {
         byteNum++;
         int len = input.length();
+        if (len > 31) {
+            throw new RuntimeException("The length is over 31, could not convert to a utf8 string");
+        }
         List<String> utf8List = new ArrayList<>();
         if (byteNum == 1 && len <= 7) {
             String tmp = "000000" + input;
