@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="OFF" packages="com.kain.log4j2.lookup">
+<Configuration status="TRACE" packages="com.kain.log4j2.lookup">
     <Properties>
         <Property name="logFilePath">./logs</Property>
         <Property name="logFileName">testLog</Property>
@@ -9,7 +9,22 @@
             <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss z} %t %-5level %class{36} %L %M - %msg%xEx%n"/>
         </Console>
         <Routing name="RollingFileDebug">
-            <Routes pattern="$${thread:threadName}">
+            <Routes pattern="$${thread:threadName}-debug">
+
+                <Route key="main-debug">
+                    <RollingFile name="RollingFileDebug_main"
+                                 fileName="${logFilePath}/${logFileName}_${thread:threadName}_debug.log"
+                                 filePattern="${logFilePath}/%d{yyyy-MM-dd HH:mm:ss}/${logFileName}_${thread:threadName}_debug.log">
+                        <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+                        <Filters>
+                            <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+                            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+                        </Filters>
+                        <Policies>
+                            <TimeBasedTriggeringPolicy interval="1"/>
+                        </Policies>
+                    </RollingFile>
+                </Route>
                 <Route>
                     <RollingFile name="RollingFileDebug_${thread:threadName}"
                                  fileName="${logFilePath}/${date:yyyy-MM-dd HH:mm:ss}/${logFileName}_${thread:threadName}_debug.log"
@@ -28,11 +43,11 @@
         </Routing>
 
         <Routing name="RollingFileInfo">
-            <Routes pattern="$${thread:threadName}">
-                <Route>
+            <Routes pattern="$${thread:threadName}-info">
+                <Route key="main-info">
                     <RollingFile name="RollingFileInfo_${thread:threadName}"
                                  fileName="${logFilePath}/${logFileName}_${thread:threadName}_info.log"
-                                 filePattern="${logFilePath}/$${date:yyyy-MM-dd HH:mm:ss}/${logFileName}-%d{yyyy-MM-dd}-${thread:threadName}-info.log">
+                                 filePattern="${logFilePath}/%d{yyyy-MM-dd HH:mm:ss}/${logFileName}-%d{yyyy-MM-dd}-${thread:threadName}-info.log">
                         <Filters>
                             <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
                             <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
@@ -40,6 +55,20 @@
                         <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
                         <Policies>
                             <TimeBasedTriggeringPolicy interval="1"/>
+                        </Policies>
+                    </RollingFile>
+                </Route>
+
+                <Route>
+                    <RollingFile name="RollingFileInfo_${thread:threadName}"
+                                 fileName="${logFilePath}/${date:yyyy-MM-dd HH:mm:ss}/${logFileName}_${thread:threadName}_info.log"
+                                 filePattern="${logFilePath}/%d{yyyy-MM-dd HH:mm:ss}/${logFileName}-%d{yyyy-MM-dd}-${thread:threadName}-info-%i.log">
+                        <Filters>
+                            <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+                        </Filters>
+                        <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+                        <Policies>
                             <SizeBasedTriggeringPolicy size="30MB"/>
                         </Policies>
                     </RollingFile>
@@ -48,17 +77,29 @@
         </Routing>
 
         <Routing name="RollingFileError">
-            <Routes pattern="$${thread:threadName}">
-                <Route>
+            <Routes pattern="$${thread:threadName}-error">
+                <Route key="main-error">
                     <RollingFile name="RollingFileError_${thread:threadName}"
                                  fileName="${logFilePath}/${logFileName}_${thread:threadName}_error.log"
-                                 filePattern="${logFilePath}/$${date:yyyy-MM-dd HH:mm:ss}/${logFileName}-%d{yyyy-MM-dd}-${thread:threadName}-error.log">
+                                 filePattern="${logFilePath}/$${date:yyyy-MM-dd HH:mm:ss}/${logFileName}-${thread:threadName}-error-%i.log">
                         <Filters>
                             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
                         </Filters>
                         <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
                         <Policies>
                             <TimeBasedTriggeringPolicy interval="1"/>
+                        </Policies>
+                    </RollingFile>
+                </Route>
+                <Route>
+                    <RollingFile name="RollingFileError_${thread:threadName}"
+                                 fileName="${logFilePath}/${date:yyyy-MM-dd HH:mm:ss}/${logFileName}_${thread:threadName}_error.log"
+                                 filePattern="${logFilePath}/$${date:yyyy-MM-dd HH:mm:ss}/${logFileName}-${thread:threadName}-error-%i.log">
+                        <Filters>
+                            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+                        </Filters>
+                        <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+                        <Policies>
                             <SizeBasedTriggeringPolicy size="30MB"/>
                         </Policies>
                     </RollingFile>
